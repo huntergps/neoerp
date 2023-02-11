@@ -1,0 +1,2 @@
+const saleFields =
+    "['id','name', 'cliente_name','cliente_ruc','state','date_order','validity_date','user_id','partner_id','acuerdo_id','payment_term_id','warehouse_id','invoice_date','invoice_status','note','is_cash_sale','access_token','margin','basenograiva','baseimponible','baseimpgrav','baseimpexe','montoiva','montoice','subtotal_sri','total_sri','amount_discount','margin_percent_general','cost_total','acuerdo_id']";
