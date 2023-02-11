@@ -145,10 +145,8 @@ class FrameHeader extends ConsumerWidget {
       child: ShaderMask(
         shaderCallback: (rect) {
           final AccentColor color = ref.watch(Settings.accentColorProvider);
-          color.resolveFromReverseBrightness(
-            theme.brightness,
-            level: theme.brightness == Brightness.light ? 0 : 2,
-          );
+          color.defaultBrushFor(theme.brightness);
+
           return LinearGradient(
             colors: [
               color,

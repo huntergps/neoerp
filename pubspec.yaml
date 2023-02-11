@@ -14,8 +14,7 @@ dependencies:
   dropdown_search: ^5.0.5
   email_validator: ^2.0.1
   flextras: ^1.0.0
-  fluent_ui:
-    path: ../fluent_ui
+  fluent_ui: ^4.3.0
   flutter:
     sdk: flutter
   flutter_acrylic: ^1.0.0+2
