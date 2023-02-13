@@ -10,7 +10,7 @@ final pickingOrderVistaFormularioProvider = StateProvider<bool>(
 );
 
 final pickingOrderEditarProvider = StateProvider<bool>(
-  (ref) => false,
+  (ref) => true,
 );
 
 final pickingOrderFormProvider = StateProvider<PickingOrder>(

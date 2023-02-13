@@ -20,16 +20,24 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = FluentTheme.of(context);
-
+    if (registroActual == null) {
+      return Center(
+        child: ProgressRing(),
+      );
+    }
     var ventaId = registroActual!.saleId?.toInt() ?? 0;
 
-    final clienteActual = registroActual!.partnerVentaIdData!.isEmpty
-        ? PartnerList(id: 0, name: '', street: '', city: '')
-        : registroActual!.partnerVentaIdData!.first;
+    final clienteActual = registroActual!.partnerVentaIdData != null
+        ? registroActual!.partnerVentaIdData!.isEmpty
+            ? PartnerList(id: 0, name: '', street: '', city: '')
+            : registroActual!.partnerVentaIdData!.first
+        : PartnerList(id: 0, name: '', street: '', city: '');
     // print(clienteActual.name);
-    final UserList userActual = registroActual!.userIdData!.isEmpty
-        ? UserList(id: 0, name: '', login: '', email: '')
-        : registroActual!.userIdData!.first;
+    final UserList userActual = registroActual!.userIdData != null
+        ? registroActual!.userIdData!.isEmpty
+            ? UserList(id: 0, name: '', login: '', email: '')
+            : registroActual!.userIdData!.first
+        : UserList(id: 0, name: '', login: '', email: '');
     // print('userActual = ${userActual.name}');
 
     // print(clienteActual);

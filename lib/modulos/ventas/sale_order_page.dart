@@ -29,7 +29,11 @@ class _SaleOderPageState extends ConsumerState<SaleOderPage> with PageMixin {
           key: viewPickingOrderFormPageKey,
           header: HeaderFormularioDespachos(
               registroActual: registroActualDesdeVentas),
-          children: [DespachoForm(registroActual: registroActualDesdeVentas)],
+          children: [
+            registroActualDesdeVentas == null
+                ? const Center(child: ProgressRing())
+                : DespachoForm(registroActual: registroActualDesdeVentas)
+          ],
           bottomBar: FootFormularioDespachos(
               registroActual: registroActualDesdeVentas));
     } else {

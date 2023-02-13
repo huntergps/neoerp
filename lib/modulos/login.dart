@@ -88,7 +88,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with PageMixin {
             child: Center(
               child: ConstrainedBox(
                 constraints:
-                    const BoxConstraints(maxWidth: 400, maxHeight: 490),
+                    const BoxConstraints(maxWidth: 400, maxHeight: 510),
                 child: ExpandedScrollingColumn(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,

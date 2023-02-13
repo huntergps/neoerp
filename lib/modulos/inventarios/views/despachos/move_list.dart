@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
-import 'package:neo/providers/providers_general.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../api_repository/dar_tipo_provider.dart';
 import '../../api_repository/move_line_repository.dart';
 import '../../api_repository/move_repository.dart';
 import '../../data_sources/stock_move_list_data_source.dart';
@@ -38,11 +38,8 @@ class _StockMoveListGridState extends ConsumerState<StockMoveListGrid> {
         (StockMoveList? previousCount, StockMoveList newCount) {
       refrescarListadoDeMoveLine(context, ref);
     });
-    final tipo = ref.watch(tipoPantalla);
-    final List<StockMoveList> moveLineListRecords = tipo == "sale_despacho_form"
-        ? ref.watch(stockMoveListDesdeVentasProvider)
-        : ref.watch(stockMoveListDesdeDespachosProvider);
 
+    final List<StockMoveList> moveLineListRecords = darMoveList(ref);
     final StockMoveListDataSource saleOrdersdatasource =
         StockMoveListDataSource(records: moveLineListRecords);
 
@@ -58,19 +55,13 @@ class _StockMoveListGridState extends ConsumerState<StockMoveListGrid> {
           gridLinesVisibility: GridLinesVisibility.both,
           headerGridLinesVisibility: GridLinesVisibility.both,
           selectionMode: SelectionMode.single,
-          // allowPullToRefresh: false,
-          // showCheckboxColumn: false,
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           headerRowHeight: 26,
           rowHeight: 40,
-          // // allowSorting: true,
-          // footerHeight: 1.0,
           onCellTap: (DataGridCellTapDetails details) {
             dataGridControllerStockMoveLines.selectedIndex =
                 details.rowColumnIndex.rowIndex - 1;
             final index = details.rowColumnIndex.rowIndex;
-            dataGridControllerStockMoveLines.selectedIndex =
-                details.rowColumnIndex.rowIndex - 1;
             seleccionarMoveDeLista(context, ref, saleOrdersdatasource, index);
           },
         ));

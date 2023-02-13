@@ -48,16 +48,11 @@ class _StockMoveLineListGridState extends ConsumerState<StockMoveLineListGrid> {
           gridLinesVisibility: GridLinesVisibility.both,
           headerGridLinesVisibility: GridLinesVisibility.both,
           selectionMode: SelectionMode.single,
-          // allowPullToRefresh: false,
-          // showCheckboxColumn: false,
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           headerRowHeight: 36,
           rowHeight: 30,
           allowEditing: true,
           editingGestureType: EditingGestureType.tap,
-
-          // // allowSorting: true,
-          // footerHeight: 1.0,
         ));
   }
 }

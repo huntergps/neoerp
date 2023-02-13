@@ -56,7 +56,7 @@ void main() async {
         TitleBarStyle.hidden,
         windowButtonVisibility: false,
       );
-      await windowManager.setSize(const Size(1300, 900));
+      await windowManager.setSize(const Size(1280, 720));
       await windowManager.setMinimumSize(const Size(350, 700));
       await windowManager.center();
       await windowManager.show();

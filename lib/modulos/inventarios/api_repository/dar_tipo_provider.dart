@@ -15,11 +15,23 @@ StockMoveListNotifier darMoveListProviderNotifier(WidgetRef ref) {
       : ref.watch(stockMoveListDesdeDespachosProvider.notifier);
 }
 
+List<StockMoveList> darMoveList(WidgetRef ref) {
+  return (ref.watch(tipoPantalla) == "sale_despacho_form")
+      ? ref.watch(stockMoveListDesdeVentasProvider)
+      : ref.watch(stockMoveListDesdeDespachosProvider);
+}
+
 StateController<StockMoveList> darMoveActualFormularioProviderNotifier(
     WidgetRef ref) {
   return (ref.watch(tipoPantalla) == "sale_despacho_form")
       ? ref.watch(stockMoveActualDesdeVentasProvider.notifier)
       : ref.watch(stockMoveActualDesdeDespachosProvider.notifier);
+}
+
+StockMoveList darMoveActualFormulario(WidgetRef ref) {
+  return (ref.watch(tipoPantalla) == "sale_despacho_form")
+      ? ref.watch(stockMoveActualDesdeVentasProvider)
+      : ref.watch(stockMoveActualDesdeDespachosProvider);
 }
 
 StockMoveLineListNotifier darMoveLineListProviderNotifier(WidgetRef ref) {

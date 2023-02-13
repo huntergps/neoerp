@@ -28,7 +28,6 @@ class StockMoveListDataSource extends DataGridSource {
 //**************************************************************************************/
 
   DataGridRowAdapter estiloCeldasStockMoveList(DataGridRow row) {
-    // StockMoveListController controller = Get.find();
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       if (dataGridCell.columnName == 'reservedAvailivity') {

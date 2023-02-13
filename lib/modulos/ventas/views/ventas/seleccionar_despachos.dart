@@ -69,9 +69,6 @@ List<CommandBarItem> seleccionDespachosBotones(
   } else {
     return despachos.map((despacho) {
       final colorFondo = getColorPickingOrderState(context, despacho.state);
-      // final colorLinea =
-      //     getColorPickingOrderState(context, despacho.state, fondo: false);
-
       return CommandBarButton(
         icon: Icon(
           FluentIcons.change_entitlements,

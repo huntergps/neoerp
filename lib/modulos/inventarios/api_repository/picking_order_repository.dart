@@ -175,6 +175,14 @@ void getRemoteRecordDespacho(
       final mresults = result.data;
       final data = mresults['results'].first;
       putDespachoInProviders(ref, data);
+      final mdataaa = data['move_lines_data'][0]['move_line_ids_data'][0];
+      final qty_done = mdataaa['qty_done'];
+      final product_uom_qty = mdataaa['product_uom_qty'];
+      final product_qty = mdataaa['product_qty'];
+      print('-----------------------------------');
+      print(
+          'qty_done=$qty_done    product_uom_qty=$product_uom_qty    product_qty=$product_qty');
+      print('-----------------------------------');
       ref.watch(pickingOrderVistaFormularioProvider.notifier).state = true;
     }
   } on DioError catch (e) {
