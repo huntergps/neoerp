@@ -5,6 +5,7 @@ import 'package:neo/core/utils/device_info.dart';
 import 'package:neo/modulos/ventas/vars/sale_order_filters.dart';
 import 'package:neo/modulos/widgets/link_text_span.dart';
 import 'package:neo/modulos/widgets/list_header.dart';
+import 'package:neo/providers/dio_provider.dart';
 
 import '../../api_repository/sale_order_repository.dart';
 import '../../providers/sale_order_form_provider.dart';
@@ -36,6 +37,8 @@ class HeaderListadoVentas extends ConsumerWidget {
         ref.watch(busquedaSaleOrderListProvider.notifier).state = textValue!;
       },
       onPressedClear: () {
+        ref.watch(dioLoadingProvider.notifier).state = false;
+
         searchTextController.text = '';
         ref.watch(busquedaSaleOrderListProvider.notifier).state = '';
         ref.watch(saleOrderListProvider.notifier).vaciar();

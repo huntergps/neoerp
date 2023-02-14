@@ -89,16 +89,30 @@ void getRemoteListSaleOrders(
     filterSecondary =
         darFiltro(listSecondaryFilterOptions, listFilterSecondary.toString());
   }
-  final filtermio =
-      "['|',('name','ilike','$busqueda'),'|',('cliente_name','ilike','$busqueda'),('cliente_ruc','ilike','$busqueda')$filter$filterSecondary]";
-  var errorMsn = "";
-  try {
-    final result = await dioClient.get(url, queryParameters: {
+  Map<String, dynamic>? queryParameters = {};
+  if (busqueda.trim().isNotEmpty) {
+    final filtermio =
+        "['|',('name','ilike','$busqueda'),'|',('cliente_name','ilike','$busqueda'),('cliente_ruc','ilike','$busqueda')$filter$filterSecondary]";
+    queryParameters = {
       'offset': ref.watch(paginaActualSaleOrderListProvider),
       'limit': ref.watch(tamanioRegistrosPaginaSaleOrderListProvider),
-      // 'field': saleFields,
       'filters': filtermio
-    });
+    };
+  } else {
+    if (listFilter.toString() != '') {
+      filter = darFiltro(listFilterOptions, listFilter.toString());
+    }
+    final filtermio = "[$filter$filterSecondary]";
+    queryParameters = {
+      'offset': ref.watch(paginaActualSaleOrderListProvider),
+      'limit': ref.watch(tamanioRegistrosPaginaSaleOrderListProvider),
+      'filters': filtermio
+    };
+  }
+
+  var errorMsn = "";
+  try {
+    final result = await dioClient.get(url, queryParameters: queryParameters);
 
     if (result.statusCode == 200) {
       final mresults = result.data;

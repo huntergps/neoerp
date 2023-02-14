@@ -53,10 +53,10 @@ class SaleOrderList {
     totalSri = revisaVaciosFloat(json['total_sri']);
     paymentTermName = json['payment_term_name'];
     userName = json['user_name'];
-    createUid = json['create_uid'];
+    createUid = revisaVaciosInt(json['create_uid']);
     createDate = json['create_date'];
     writeDate = json['write_date'];
-    writeUid = json['write_uid'];
+    writeUid = revisaVaciosInt(json['write_uid']);
   }
 
   Map<String, dynamic> toJson() {
