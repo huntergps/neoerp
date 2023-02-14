@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:neo/core/utils/device_info.dart';
+import 'package:neo/providers/dio_provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -47,8 +48,6 @@ class _SaleOrderLinesGridState extends ConsumerState<SaleOrderLinesGrid> {
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           headerRowHeight: 26,
           rowHeight: isPhone ? 48 : 40,
-          // // allowSorting: true,
-          // footerHeight: 1.0,
         ));
   }
 }

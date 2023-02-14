@@ -35,56 +35,62 @@ class _DespachoFormFormState extends ConsumerState<DespachoForm> {
 
   @override
   Widget build(BuildContext context) {
-    if (ref.watch(dioLoadingProvider) == true) {
-      return const Center(child: ProgressRing());
-    } else {
-      final registroActual = widget.registroActual;
-
-      final List<StockMoveList>? moves = registroActual.moveLinesData ?? [];
-
-      final StockMoveList move = darMoveActualFormulario(ref);
-      final isPhone = DeviceScreen.isPhone(context);
-      final altoNormal = isPhone ? 250.00 : 550.00;
-      final double alto =
-          moves!.length > 10 ? 31 * moves.length.toDouble() : altoNormal;
-      return Column(
-        children: [
-          // DespachooMainInfoDesktop(registroActual: registroActual),
-          if (isPhone) ...[
-            DespachoMainInfoMobil(registroActual: registroActual)
-          ] else ...[
-            DespachoMainInfoDesktop(registroActual: registroActual)
-          ],
-          SizedBox(
-              height: alto,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    flex: 4,
-                    child: Card(
-                      padding: const EdgeInsets.all(8.0),
-                      child: StockMoveListGrid(moveListRecords: moves),
-                    ),
-                  ),
-                  if (isPhone == false) ...[
-                    const SizedBox(width: 4.0),
-                    Expanded(
-                      flex: 2,
-                      child: PanelMoveInfo(
-                        move: move,
-                      ),
-                    ),
-                  ],
-                ],
-              )),
-        ],
+    final registroActual = widget.registroActual;
+    final List<StockMoveList>? moves = registroActual.moveLinesData ?? [];
+    final StockMoveList move = darMoveActualFormulario(ref);
+    final isPhone = DeviceScreen.isPhone(context);
+    final altoNormal = isPhone ? 250.00 : 550.00;
+    final double alto =
+        moves!.length > 10 ? 31 * moves.length.toDouble() : altoNormal;
+    if (registroActual == null) {
+      return Center(
+        child: Card(
+          child: ProgressBar(),
+        ),
       );
     }
-    // });
-    //
-    // ],
-    // );
+    return Stack(
+      children: [
+        Column(
+          children: [
+            if (isPhone) ...[
+              DespachoMainInfoMobil(registroActual: registroActual)
+            ] else ...[
+              DespachoMainInfoDesktop(registroActual: registroActual)
+            ],
+            SizedBox(
+                height: alto,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Card(
+                        padding: const EdgeInsets.all(8.0),
+                        child: StockMoveListGrid(moveListRecords: moves),
+                      ),
+                    ),
+                    if (isPhone == false) ...[
+                      const SizedBox(width: 4.0),
+                      Expanded(
+                        flex: 2,
+                        child: PanelMoveInfo(move: move),
+                      ),
+                    ],
+                  ],
+                )),
+          ],
+        ),
+        if (ref.watch(dioLoadingProvider) == true) ...[
+          const Center(
+            child: Card(
+              child: ProgressRing(),
+            ),
+          )
+        ],
+      ],
+    );
   }
+  // }
 }

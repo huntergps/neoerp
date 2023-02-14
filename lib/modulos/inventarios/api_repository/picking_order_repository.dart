@@ -30,22 +30,18 @@ void despachoRefreshEstadoFacturas(
   int id,
   String accion,
 ) async {
+  ref.watch(dioLoadingProvider.notifier).state = true;
   final dioClient = ref.watch(dioHttpProvider);
   final String getTokenUrl = '/api/stock_picking/$id';
   final url = dioClient.options.baseUrl + getTokenUrl;
-  // final filtermio = "[('id','=','$id')]";
   final dbConfig = {"action": accion};
   var errorMsn = "";
   try {
     final result = await dioClient.post(url, data: jsonEncode(dbConfig));
-    // .get(url, queryParameters: {'detail': true, 'filters': filtermio});
-
     if (result.statusCode == 200) {
-      // final mresults = result.data;
-      // final data = mresults['results'].first;
-
       getRemoteRecordDespacho(context, ref, id);
     }
+    ref.watch(dioLoadingProvider.notifier).state = false;
   } on DioError catch (e) {
     if (e.response != null) {
       final mdata = e.response!.data;
@@ -167,34 +163,16 @@ void getRemoteRecordDespacho(
   final url = dioClient.options.baseUrl + getTokenUrl;
   final filtermio = "[('id','=','$id')]";
   var errorMsn = "";
+  ref.watch(dioLoadingProvider.notifier).state = true;
   try {
     final result = await dioClient
         .get(url, queryParameters: {'detail': true, 'filters': filtermio});
-
     if (result.statusCode == 200) {
       final mresults = result.data;
       final data = mresults['results'].first;
       putDespachoInProviders(ref, data);
-      final mdataaa = data['move_lines_data'][0]['move_line_ids_data'][0];
-      final qty_done = mdataaa['qty_done'];
-      final product_uom_qty = mdataaa['product_uom_qty'];
-      final product_qty = mdataaa['product_qty'];
-
-      final mdataMov = data['move_lines_data'][0];
-      final quantity_done = mdataMov['quantity_done'];
-      final product_qtyM = mdataMov['product_qty'];
-      final product_uom_qtyM = mdataMov['product_uom_qty'];
-      print('------------ MOVIMEIENTOS ----------------------');
-      print(quantity_done);
-      print(
-          'quantity_done=$quantity_done    product_qtyM=$product_qtyM    product_uom_qtyM=$product_uom_qtyM');
-      print('-----------------------------------');
-
-      print('------------ LINEAS ----------------------');
-      print(
-          'qty_done=$qty_done    product_uom_qty=$product_uom_qty    product_qty=$product_qty');
-      print('-----------------------------------');
       ref.watch(pickingOrderVistaFormularioProvider.notifier).state = true;
+      ref.watch(dioLoadingProvider.notifier).state = false;
     }
   } on DioError catch (e) {
     if (e.response != null) {
@@ -220,6 +198,8 @@ void getRemoteListPickingOrders(
   final filtermio =
       "['|',('name','ilike','$busqueda'),'|',('origin','ilike','$busqueda'),'|',('cliente_name','ilike','$busqueda'),('cliente_ruc','ilike','$busqueda')]";
   var errorMsn = "";
+  ref.read(dioLoadingProvider.notifier).state = false;
+
   try {
     final result = await dioClient.get(url, queryParameters: {
       'offset': ref.watch(paginaActualPickingOrderListProvider),

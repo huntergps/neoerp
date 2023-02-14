@@ -75,6 +75,8 @@ void getRemoteListSaleOrders(
   List<FilterMenuItem>? listSecondaryFilterOptions,
   String? listFilterSecondary,
 }) async {
+  ref.watch(dioLoadingProvider.notifier).state = true;
+
   final dioClient = ref.watch(dioHttpProvider);
   const String getTokenUrl = '/api/sale.order';
   final url = dioClient.options.baseUrl + getTokenUrl;
@@ -108,6 +110,7 @@ void getRemoteListSaleOrders(
       ref.watch(totalRegistrosCargadosSaleOrderListProvider.notifier).state =
           ref.watch(saleOrderListProvider.notifier).state.length;
     }
+    ref.watch(dioLoadingProvider.notifier).state = false;
   } on DioError catch (e) {
     if (e.response != null) {
       final mdata = e.response!.data;

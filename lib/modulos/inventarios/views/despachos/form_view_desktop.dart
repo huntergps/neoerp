@@ -23,11 +23,7 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = FluentTheme.of(context);
-    if (registroActual == null) {
-      return Center(
-        child: ProgressRing(),
-      );
-    }
+
     var ventaId = registroActual!.saleId?.toInt() ?? 0;
 
     final clienteActual = registroActual!.partnerVentaIdData != null

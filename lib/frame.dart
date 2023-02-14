@@ -160,33 +160,6 @@ class FrameHeader extends ConsumerWidget {
   }
 }
 
-class BotonTema extends ConsumerWidget {
-  const BotonTema({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final appTheme = ref.read(appThemeProvider.notifier);
-    // final ThemeMode mode = ref.watch(Settings.themeModeProvider);
-
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(end: 8.0),
-      child: ToggleSwitch(
-        content: const Text('Modo Oscuro'),
-        checked: FluentTheme.of(context).brightness.isDark,
-        onChanged: (v) {
-          if (v) {
-            ref.read(Settings.themeModeProvider.notifier).set(ThemeMode.dark);
-          } else {
-            ref.read(Settings.themeModeProvider.notifier).set(ThemeMode.light);
-          }
-        },
-      ),
-    );
-  }
-}
-
 class WindowButtons extends StatelessWidget {
   const WindowButtons({Key? key}) : super(key: key);
 

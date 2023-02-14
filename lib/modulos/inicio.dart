@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neo/widgets/button_change_theme.dart';
 
 import '../core/theme/controllers/settings.dart';
 import '../widgets/app_logo_text.dart';
@@ -77,6 +78,7 @@ class _InicioPageState extends ConsumerState<InicioPage> with PageMixin {
                         height: 5,
                       ),
                       TextBox(
+                        readOnly: true,
                         initialValue: ref.watch(Settings.sessionIdProvider),
                         autofocus: false,
                       ),
@@ -106,6 +108,11 @@ class _InicioPageState extends ConsumerState<InicioPage> with PageMixin {
                           //     },
                           //   ),
                           // ),
+                          Flexible(
+                            flex: 2,
+                            child: ButtonChangeTheme(),
+                          ),
+
                           Flexible(
                             child: FilledButton(
                               child: const Text('Cerrar Sesión'),

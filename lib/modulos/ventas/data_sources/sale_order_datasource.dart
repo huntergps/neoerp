@@ -33,8 +33,6 @@ class SaleOrderListDataSource extends DataGridSource {
     final paddingHorizontal = isPhone ? 4.0 : 6.0;
     final fontSize = isPhone ? 10.0 : 12.0;
 
-    // final DataGridCell<dynamic> mid =
-    // row.getCells().firstWhere((cel) => cel.columnName == 'id');
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       if (dataGridCell.columnName == 'amountTotal') {
@@ -88,7 +86,7 @@ cabecerasTablaSaleOrder(BuildContext context) {
     GridColumn(
         columnName: 'name',
         allowEditing: false,
-        minimumWidth: 60.0,
+        minimumWidth: isPhone ? 52 : 100.0,
         maximumWidth: isPhone ? 62 : 120.0,
         columnWidthMode: ColumnWidthMode.fitByCellValue,
         label: Container(
@@ -101,7 +99,7 @@ cabecerasTablaSaleOrder(BuildContext context) {
     GridColumn(
         columnName: 'dateOrder',
         allowEditing: false,
-        minimumWidth: 50.0,
+        minimumWidth: isPhone ? 650 : 100.0,
         maximumWidth: isPhone ? 60 : 130.0,
         label: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6.0),
