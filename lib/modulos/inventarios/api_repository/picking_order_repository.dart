@@ -179,7 +179,18 @@ void getRemoteRecordDespacho(
       final qty_done = mdataaa['qty_done'];
       final product_uom_qty = mdataaa['product_uom_qty'];
       final product_qty = mdataaa['product_qty'];
+
+      final mdataMov = data['move_lines_data'][0];
+      final quantity_done = mdataMov['quantity_done'];
+      final product_qtyM = mdataMov['product_qty'];
+      final product_uom_qtyM = mdataMov['product_uom_qty'];
+      print('------------ MOVIMEIENTOS ----------------------');
+      print(quantity_done);
+      print(
+          'quantity_done=$quantity_done    product_qtyM=$product_qtyM    product_uom_qtyM=$product_uom_qtyM');
       print('-----------------------------------');
+
+      print('------------ LINEAS ----------------------');
       print(
           'qty_done=$qty_done    product_uom_qty=$product_uom_qty    product_qty=$product_qty');
       print('-----------------------------------');

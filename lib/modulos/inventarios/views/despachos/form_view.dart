@@ -62,7 +62,7 @@ class _DespachoFormFormState extends ConsumerState<DespachoForm> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
-                    flex: 3,
+                    flex: 4,
                     child: Card(
                       padding: const EdgeInsets.all(8.0),
                       child: StockMoveListGrid(moveListRecords: moves),

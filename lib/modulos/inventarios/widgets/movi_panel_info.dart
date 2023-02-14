@@ -47,7 +47,7 @@ class PanelMoveInfo extends ConsumerWidget {
     return Card(
         // backgroundColor: Colors.blue,
 
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(4.0),
         child: Column(
           children: [
             Row(
@@ -115,7 +115,7 @@ class PanelMoveInfo extends ConsumerWidget {
                           child: TextLabel(
                               width: 50,
                               widthValue: 360,
-                              fontSizeValue: 14,
+                              fontSizeValue: 13,
                               label: 'Detalle',
                               value: '${move.productIdName}'),
                         ),
@@ -131,26 +131,28 @@ class PanelMoveInfo extends ConsumerWidget {
                               label: 'Cantidad',
                               value: '${move.productUomQty}'),
                         ),
-                        Flexible(
-                          child: TextLabel(
-                              width: 50,
-                              widthValue: 360,
-                              label: 'Hecho',
-                              value: '${move.qtyDone}'),
-                        ),
-                        Flexible(
-                          child: TextLabel(
-                              width: 50,
-                              widthValue: 360,
-                              label: 'Reservado',
-                              value: '${move.reservedAvailivity}'),
-                        ),
+                        if (move.state == 'done') ...[
+                          Flexible(
+                            child: TextLabel(
+                                width: 50,
+                                widthValue: 360,
+                                label: 'Hecho',
+                                value: '${move.quantityDone}'),
+                          )
+                        ],
+                        if (move.state != 'done') ...[
+                          Flexible(
+                            child: TextLabel(
+                                width: 50,
+                                widthValue: 360,
+                                label: 'Reservado',
+                                value: '${move.reservedAvailivity}'),
+                          )
+                        ],
                       ],
                     ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
                     if (modoEdicion == false) ...[
+                      const SizedBox(height: 8.0),
                       if (esPorSerie == false) ...[
                         Row(
                           children: [
@@ -333,7 +335,7 @@ class PanelMoveInfo extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 4.0),
             StockMoveLineListGrid(moveListRecords: move.moveLineIdsData),
           ],
         ));

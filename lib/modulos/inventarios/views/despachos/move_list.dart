@@ -51,7 +51,7 @@ class _StockMoveListGridState extends ConsumerState<StockMoveListGrid> {
           key: gridKeyStockMoveLines,
           controller: dataGridControllerStockMoveLines,
           source: saleOrdersdatasource,
-          columns: cabecerasTablaStockMoveList(),
+          columns: cabecerasTablaStockMoveList(ref),
           gridLinesVisibility: GridLinesVisibility.both,
           headerGridLinesVisibility: GridLinesVisibility.both,
           selectionMode: SelectionMode.single,

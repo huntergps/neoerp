@@ -241,6 +241,7 @@ class _LoginPageState extends ConsumerState<LoginPage> with PageMixin {
                                             .state = res;
                                       }
                                     } on DioError catch (e) {
+                                      print(e.type);
                                       if (e.response != null) {
                                         final mdata = e.response!.data;
                                         errorMsn = " ${mdata['error_descrip']}";

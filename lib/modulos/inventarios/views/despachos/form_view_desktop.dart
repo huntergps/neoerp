@@ -1,10 +1,25 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:icon_forest/amazingneoicons.dart';
+import 'package:icon_forest/app_crypto_icons.dart';
+import 'package:icon_forest/bytesize.dart';
+import 'package:icon_forest/don_icons.dart';
+import 'package:icon_forest/flat_icons_arrows.dart';
+import 'package:icon_forest/flat_icons_medium.dart';
+import 'package:icon_forest/gala_icons.dart';
+import 'package:icon_forest/iconoir.dart';
+import 'package:icon_forest/kicons_emoji.dart';
+import 'package:icon_forest/mbi_combi.dart';
+import 'package:icon_forest/mbi_linecons.dart';
+import 'package:icon_forest/system_uicons.dart';
+import 'package:icon_forest/ternav_icons_duotone.dart';
 import 'package:neo/modulos/entidades/api_repository/partner_repository.dart';
+import 'package:neo/widgets/error_dialog.dart';
 import 'package:neo/widgets/text_label.dart';
 
 import '../../../common/models/user_model.dart';
 import '../../../entidades/models/partner_model.dart';
+import '../../api_repository/dar_tipo_provider.dart';
 import '../../api_repository/move_repository.dart';
 import '../../api_repository/picking_order_repository.dart';
 import '../../models/picking_model.dart';
@@ -38,12 +53,7 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
             ? UserList(id: 0, name: '', login: '', email: '')
             : registroActual!.userIdData!.first
         : UserList(id: 0, name: '', login: '', email: '');
-    // print('userActual = ${userActual.name}');
 
-    // print(clienteActual);
-    // final userActual = registroActual!.userIdData!.first;
-    // final formaPago = registroActual!.paymentTermIdData!.first;
-    // final acuerdo = registroActual!.acuerdoIdData!.first;
     final colorFondo = getColorAprobado(context, registroActual!.state);
     final colorLinea =
         getColorAprobado(context, registroActual!.state, fondo: false);
@@ -70,7 +80,106 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                         label: 'Entidad',
                         value: '${registroActual!.clienteName}'),
                   ),
-                  const SizedBox(width: 8),
+                  if (registroActual!.state == 'draft') ...[
+                    Tooltip(
+                      message: 'Preparar Despacho',
+                      style: const TooltipThemeData(preferBelow: true),
+                      child: IconButton(
+                        icon: Icon(
+                          DonIcons.completed,
+                          color: Colors.blue.lighter,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          var despachoId = registroActual!.id?.toInt() ?? 0;
+                          despachoRefreshEstadoFacturas(context, ref,
+                              despachoId, 'despachos_preparar_productos');
+                        },
+                      ),
+                    ),
+                  ],
+                  if (registroActual!.state == 'confirmed') ...[
+                    Tooltip(
+                      message: 'Verificar Despacho',
+                      style: const TooltipThemeData(preferBelow: true),
+                      child: IconButton(
+                        icon: Icon(
+                          FluentIcons.trigger_approval,
+                          color: Colors.blue.lighter,
+                          size: 24.0,
+                        ),
+                        onPressed: () {
+                          var despachoId = registroActual!.id?.toInt() ?? 0;
+                          despachoRefreshEstadoFacturas(context, ref,
+                              despachoId, 'despachos_comprobar_existencias');
+                        },
+                      ),
+                    ),
+                  ],
+                  if (registroActual!.state == 'assigned') ...[
+                    if (modoEdicion) ...[
+                      const SizedBox(width: 8),
+                      Tooltip(
+                        message: 'Validar Despacho',
+                        style: const TooltipThemeData(preferBelow: true),
+                        child: IconButton(
+                          icon: Icon(
+                            FlatIconsMedium.checked_1,
+                            color: Colors.green,
+                            size: 24.0,
+                          ),
+                          onPressed: () {
+                            var despachoId = registroActual!.id?.toInt() ?? 0;
+                            final pend =
+                                darMoveListProviderNotifier(ref).getRegistros();
+                            final pp = pend.fold<double>(
+                                0,
+                                (preVal, e) =>
+                                    preVal + e.reservedAvailivity!.toDouble());
+                            final pp2 = pend.fold<double>(
+                                0,
+                                (preVal, e) =>
+                                    preVal + e.productUomQty!.toDouble());
+                            if (pp < pp2) {
+                              showQuestion(context, 'Validar',
+                                  'El despacho esta incompleto. Si continua se crearan despachos parciales',
+                                  () {
+                                despachoRefreshEstadoFacturas(context, ref,
+                                    despachoId, 'despachos_validar_reservas');
+                                Navigator.pop(context);
+                              });
+                            } else {
+                              despachoRefreshEstadoFacturas(context, ref,
+                                  despachoId, 'despachos_validar_reservas');
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Tooltip(
+                        message: 'Anular reserva de Despacho',
+                        style: const TooltipThemeData(preferBelow: true),
+                        child: IconButton(
+                          icon: Icon(
+                            FlatIconsMedium.close,
+                            color: theme.borderInputColor,
+                            size: 24.0,
+                          ),
+                          onPressed: () {
+                            ref
+                                .read(pickingOrderEditarProvider.notifier)
+                                .state = true;
+
+                            var despachoId = registroActual!.id?.toInt() ?? 0;
+                            despachoRefreshEstadoFacturas(context, ref,
+                                despachoId, 'despachos_anular_reservas');
+                            // launchInBrowserPdf(Uri.parse(linkPdf));
+                          },
+                        ),
+                      ),
+                    ]
+                  ],
+                  const SizedBox(width: 4),
                   Card(
                     padding: const EdgeInsets.only(
                         left: 6.0, right: 6.0, top: 4.0, bottom: 4.0),

@@ -58,9 +58,6 @@ class StockMoveLineListDataSource extends DataGridSource {
         autofocus: true,
         controller: editingController..text = displayText,
         textAlign: isNumericType ? TextAlign.right : TextAlign.left,
-        // decoration: InputDecoration(
-        //   contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
-        // ),
         keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
         onChanged: (String value) {
           if (value.isNotEmpty) {
@@ -74,24 +71,11 @@ class StockMoveLineListDataSource extends DataGridSource {
           }
         },
         onSubmitted: (String value) {
-          // In Mobile Platform.
-          // Call [CellSubmit] callback to fire the canSubmitCell and
-          // onCellSubmit to commit the new value in single place.
           submitCell();
         },
       ),
     );
   }
-
-  // void updateDataGridSourceAll() {
-  //   notifyDataSourceListeners();
-  // }
-
-  // void updateDataGridSource({required RowColumnIndex rowColumnIndex}) {
-  //   notifyDataSourceListeners(rowColumnIndex: rowColumnIndex);
-  //   print(rowColumnIndex.rowIndex);
-  // }
-
 }
 //**************************************************************************************/
 // COMO SE QUIERE VISUALIZAR LOS DATOS DENTRO DE LAS CELDAS DE SALEORDERLINE
@@ -106,9 +90,9 @@ DataGridRowAdapter estiloCeldasStockMoveLineList(DataGridRow row) {
   // .firstWhere((e) => e.columnName == 'productTracking');
   // final tracking = moveLine.value;
   // print(tracking);
-  final DataGridCell<dynamic> mid =
+  final DataGridCell<dynamic> mProductTracking =
       row.getCells().firstWhere((cel) => cel.columnName == 'productTracking');
-  final String tracking = mid.value;
+  final String tracking = mProductTracking.value;
   return DataGridRowAdapter(
       cells: row.getCells().map<Widget>((dataGridCell) {
     if (dataGridCell.columnName == 'id') {
@@ -230,10 +214,11 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
     //           style: TextStyle(fontSize: 12, color: Colors.white),
     //         ))),
     GridColumn(
+        visible: move.state != 'done',
         columnName: 'productUomQty',
         allowEditing: true,
-        maximumWidth: 70.0,
-        minimumWidth: 60.0,
+        maximumWidth: 90.0,
+        minimumWidth: 80.0,
         label: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6.0),
             alignment: Alignment.centerRight,
@@ -242,7 +227,7 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
               style: TextStyle(fontSize: 11, color: Colors.white),
             ))),
     GridColumn(
-      visible: false,
+      visible: move.state == 'done',
       columnName: 'qtyDone',
       allowEditing: true,
       maximumWidth: 70.0,

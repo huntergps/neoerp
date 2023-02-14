@@ -26,6 +26,5 @@ void seleccionarMoveDeLista(BuildContext context, WidgetRef ref,
             ? ref.read(stockMoveActualDesdeVentasProvider.notifier)
             : ref.read(stockMoveActualDesdeDespachosProvider.notifier);
     mMovimiento.state = mMovimientoListado.getRegistro(id);
-    print(mMovimiento.state.id);
   }
 }

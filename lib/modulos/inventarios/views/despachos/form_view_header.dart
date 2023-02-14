@@ -67,89 +67,84 @@ class HeaderFormularioDespachos extends ConsumerWidget {
     final modoEdicion = ref.watch(pickingOrderEditarProvider);
 
     final simpleCommandBarItems = <CommandBarItem>[
-      if (registroActual.state == 'assigned') ...[
-        CommandBarBuilderItem(
-          builder: (context, mode, w) => Tooltip(
-            message: "Anular Reserva",
-            child: w,
-          ),
-          wrappedItem: CommandBarButton(
-            icon: Icon(
-              FluentIcons.processing_cancel,
-              color: theme.borderInputColor,
-              size: 24.0,
-            ),
-            onPressed: () {
-              ref.read(pickingOrderEditarProvider.notifier).state = true;
+      // if (registroActual.state == 'assigned') ...[
+      //   CommandBarBuilderItem(
+      //     builder: (context, mode, w) => Tooltip(
+      //       message: "Anular Reserva",
+      //       child: w,
+      //     ),
+      //     wrappedItem: CommandBarButton(
+      //       icon: Icon(
+      //         FluentIcons.processing_cancel,
+      //         color: theme.borderInputColor,
+      //         size: 24.0,
+      //       ),
+      //       onPressed: () {
+      //         ref.read(pickingOrderEditarProvider.notifier).state = true;
 
-              var despachoId = registroActual.id?.toInt() ?? 0;
-              despachoRefreshEstadoFacturas(
-                  context, ref, despachoId, 'despachos_anular_reservas');
-              // launchInBrowserPdf(Uri.parse(linkPdf));
-            },
-          ),
-        ),
-      ],
-      if (registroActual.state == 'confirmed') ...[
-        CommandBarBuilderItem(
-          builder: (context, mode, w) => Tooltip(
-            message: "Verificar",
-            child: w,
-          ),
-          wrappedItem: CommandBarButton(
-            icon: Icon(
-              FluentIcons.trigger_approval,
-              color: Colors.blue.lighter,
-              size: 24.0,
-            ),
-            onPressed: () {
-              var despachoId = registroActual.id?.toInt() ?? 0;
-              despachoRefreshEstadoFacturas(
-                  context, ref, despachoId, 'despachos_comprobar_existencias');
-            },
-          ),
-        ),
-      ],
+      //         var despachoId = registroActual.id?.toInt() ?? 0;
+      //         despachoRefreshEstadoFacturas(
+      //             context, ref, despachoId, 'despachos_anular_reservas');
+      //         // launchInBrowserPdf(Uri.parse(linkPdf));
+      //       },
+      //     ),
+      //   ),
+      // ],
+      // if (registroActual.state == 'confirmed') ...[
+      //   CommandBarBuilderItem(
+      //     builder: (context, mode, w) => Tooltip(
+      //       message: "Verificar",
+      //       child: w,
+      //     ),
+      //     wrappedItem: CommandBarButton(
+      //       icon: Icon(
+      //         FluentIcons.trigger_approval,
+      //         color: Colors.blue.lighter,
+      //         size: 24.0,
+      //       ),
+      //       onPressed: () {
+      //         var despachoId = registroActual.id?.toInt() ?? 0;
+      //         despachoRefreshEstadoFacturas(
+      //             context, ref, despachoId, 'despachos_comprobar_existencias');
+      //       },
+      //     ),
+      //   ),
+      // ],
       if (registroActual.state == 'assigned') ...[
         if (modoEdicion == true) ...[
-          CommandBarBuilderItem(
-            builder: (context, mode, w) => Tooltip(
-              message: "Validar",
-              child: w,
-            ),
-            wrappedItem: CommandBarButton(
-              icon: Icon(
-                FluentIcons.account_activity,
-                color: Colors.green,
-                size: 24.0,
-              ),
-              onPressed: () {
-                var despachoId = registroActual.id?.toInt() ?? 0;
-                final pendientes =
-                    darMoveListProviderNotifier(ref).getRegistros();
-                final pp = pendientes.fold<double>(
-                    0,
-                    (previousValue, element) =>
-                        previousValue + element.reservedAvailivity!.toDouble());
-                final pp2 = pendientes.fold<double>(
-                    0,
-                    (previousValue, element) =>
-                        previousValue + element.productUomQty!.toDouble());
-                if (pp < pp2) {
-                  showQuestion(context, 'Validar',
-                      'El despacho esta incompleto. Si continua se crearan despachos parciales',
-                      () {
-                    despachoRefreshEstadoFacturas(
-                        context, ref, despachoId, 'despachos_validar_reservas');
-                    Navigator.pop(context);
-                  });
-                } else {
-                  despachoRefreshEstadoFacturas(
-                      context, ref, despachoId, 'despachos_validar_reservas');
-                }
-              },
-            ),
-          ),
+          // CommandBarBuilderItem(
+          //   builder: (context, mode, w) => Tooltip(
+          //     message: "Validar",
+          //     child: w,
+          //   ),
+          //   wrappedItem: CommandBarButton(
+          //     icon: Icon(
+          //       FluentIcons.account_activity,
+          //       color: Colors.green,
+          //       size: 24.0,
+          //     ),
+          //     onPressed: () {
+          //       var despachoId = registroActual.id?.toInt() ?? 0;
+          //       final pend = darMoveListProviderNotifier(ref).getRegistros();
+          //       final pp = pend.fold<double>(0,
+          //           (preVal, e) => preVal + e.reservedAvailivity!.toDouble());
+          //       final pp2 = pend.fold<double>(
+          //           0, (preVal, e) => preVal + e.productUomQty!.toDouble());
+          //       if (pp < pp2) {
+          //         showQuestion(context, 'Validar',
+          //             'El despacho esta incompleto. Si continua se crearan despachos parciales',
+          //             () {
+          //           despachoRefreshEstadoFacturas(
+          //               context, ref, despachoId, 'despachos_validar_reservas');
+          //           Navigator.pop(context);
+          //         });
+          //       } else {
+          //         despachoRefreshEstadoFacturas(
+          //             context, ref, despachoId, 'despachos_validar_reservas');
+          //       }
+          //     },
+          //   ),
+          // ),
           const CommandBarSeparator(),
           // CommandBarSeparator(),
           CommandBarBuilderItem(
@@ -192,9 +187,9 @@ class HeaderFormularioDespachos extends ConsumerWidget {
               child: w,
             ),
             wrappedItem: CommandBarButton(
-              icon: const Icon(
+              icon: Icon(
                 FluentIcons.cancel,
-                color: Colors.grey,
+                color: theme.borderInputColor,
                 size: 24.0,
               ),
               onPressed: () {
@@ -206,41 +201,42 @@ class HeaderFormularioDespachos extends ConsumerWidget {
           ),
         ]
       ],
-      const CommandBarSeparator(),
-      CommandBarBuilderItem(
-        builder: (context, mode, w) => Tooltip(
-          message: "Visualizar en el navegador!",
-          child: w,
-        ),
-        wrappedItem: CommandBarButton(
-          icon: Icon(
-            FluentIcons.pdf,
-            color: theme.accentColor.darker,
-            size: 24.0,
+      if (modoEdicion == true) ...[
+        const CommandBarSeparator(),
+        CommandBarBuilderItem(
+          builder: (context, mode, w) => Tooltip(
+            message: "Visualizar en el navegador!",
+            child: w,
           ),
-          onPressed: () {
-            launchInBrowserPdf(Uri.parse(linkPdf));
-          },
-        ),
-      ),
-      CommandBarBuilderItem(
-        builder: (context, mode, w) => Tooltip(
-          message: "Refrescar",
-          child: w,
-        ),
-        wrappedItem: CommandBarButton(
-          icon: Icon(
-            FluentIcons.refresh,
-            color: theme.accentColor,
-            size: 24.0,
+          wrappedItem: CommandBarButton(
+            icon: Icon(
+              FluentIcons.pdf,
+              color: theme.accentColor.darker,
+              size: 24.0,
+            ),
+            onPressed: () {
+              launchInBrowserPdf(Uri.parse(linkPdf));
+            },
           ),
-          onPressed: () {
-            var despachoId = registroActual.id?.toInt() ?? 0;
-            getRemoteRecordDespacho(context, ref, despachoId);
-            // launchInBrowserPdf(Uri.parse(linkPdf));
-          },
         ),
-      ),
+        CommandBarBuilderItem(
+          builder: (context, mode, w) => Tooltip(
+            message: "Refrescar",
+            child: w,
+          ),
+          wrappedItem: CommandBarButton(
+            icon: Icon(
+              FluentIcons.refresh,
+              color: theme.accentColor,
+              size: 24.0,
+            ),
+            onPressed: () {
+              var despachoId = registroActual.id?.toInt() ?? 0;
+              getRemoteRecordDespacho(context, ref, despachoId);
+            },
+          ),
+        ),
+      ],
     ];
 
     return FormPageHeader(

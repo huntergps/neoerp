@@ -41,7 +41,7 @@ const List<FilterMenuItem> saleOrderEstateFilterItems = [
     where: "('state','=','done')",
   ),
   FilterMenuItem(
-    title: 'A la espera de Aprobación',
+    title: 'Esperando Aprobación',
     where: "('state','=','waiting_approval')",
   ),
   FilterMenuItem(

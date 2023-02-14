@@ -3,8 +3,10 @@
 //**************************************************************************************/
 
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../api_repository/dar_tipo_provider.dart';
 import '../models/stock_move_list_model.dart';
 
 class StockMoveListDataSource extends DataGridSource {
@@ -117,7 +119,9 @@ class StockMoveListDataSource extends DataGridSource {
 // COMO SE QUIERE VISUALIZAR LAS CABECERAS DE LAS COLUMNAS DE SALEORDERLINE
 //**************************************************************************************/
 
-cabecerasTablaStockMoveList() {
+cabecerasTablaStockMoveList(WidgetRef ref) {
+  final StockMoveList move = darMoveActualFormularioProviderNotifier(ref).state;
+
   final mCab = [
     GridColumn(
         visible: false,
@@ -158,8 +162,6 @@ cabecerasTablaStockMoveList() {
               style: TextStyle(fontSize: 12, color: Colors.white),
               overflow: TextOverflow.ellipsis,
             ))),
-    // if (masterController.features.contains('precio_unitario')) ...[
-
     GridColumn(
         columnName: 'productUomQty',
         allowEditing: false,
@@ -173,8 +175,8 @@ cabecerasTablaStockMoveList() {
               style: TextStyle(fontSize: 12, color: Colors.white),
               overflow: TextOverflow.ellipsis,
             ))),
-
     GridColumn(
+        visible: move.state != 'done',
         columnName: 'reservedAvailivity',
         allowEditing: true,
         maximumWidth: 60.0,
@@ -187,8 +189,8 @@ cabecerasTablaStockMoveList() {
               style: TextStyle(fontSize: 12, color: Colors.white),
               overflow: TextOverflow.ellipsis,
             ))),
-
     GridColumn(
+        visible: move.state == 'done',
         columnName: 'qtyDone',
         allowEditing: true,
         maximumWidth: 60.0,
@@ -262,7 +264,7 @@ List<DataGridRow> stockMoveListGetDataRows(List<StockMoveList> records) {
                 columnName: 'reservedAvailivity',
                 value: e.reservedAvailivity!.toDouble()),
             DataGridCell<double>(
-                columnName: 'qtyDone', value: e.qtyDone!.toDouble()),
+                columnName: 'qtyDone', value: e.quantityDone!.toDouble()),
             DataGridCell<String>(
                 columnName: 'productUomName', value: e.productUomName),
             DataGridCell<double>(
