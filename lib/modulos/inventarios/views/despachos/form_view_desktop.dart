@@ -1,18 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:icon_forest/amazingneoicons.dart';
-import 'package:icon_forest/app_crypto_icons.dart';
-import 'package:icon_forest/bytesize.dart';
-import 'package:icon_forest/don_icons.dart';
-import 'package:icon_forest/flat_icons_arrows.dart';
-import 'package:icon_forest/flat_icons_medium.dart';
-import 'package:icon_forest/gala_icons.dart';
-import 'package:icon_forest/iconoir.dart';
-import 'package:icon_forest/kicons_emoji.dart';
-import 'package:icon_forest/mbi_combi.dart';
-import 'package:icon_forest/mbi_linecons.dart';
-import 'package:icon_forest/system_uicons.dart';
-import 'package:icon_forest/ternav_icons_duotone.dart';
+
 import 'package:neo/modulos/entidades/api_repository/partner_repository.dart';
 import 'package:neo/widgets/error_dialog.dart';
 import 'package:neo/widgets/text_label.dart';
@@ -86,7 +74,7 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                       style: const TooltipThemeData(preferBelow: true),
                       child: IconButton(
                         icon: Icon(
-                          DonIcons.completed,
+                          FluentIcons.completed,
                           color: Colors.blue.lighter,
                           size: 24.0,
                         ),
@@ -124,7 +112,7 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                         style: const TooltipThemeData(preferBelow: true),
                         child: IconButton(
                           icon: Icon(
-                            FlatIconsMedium.checked_1,
+                            FluentIcons.change_entitlements,
                             color: Colors.green,
                             size: 24.0,
                           ),
@@ -161,7 +149,7 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                         style: const TooltipThemeData(preferBelow: true),
                         child: IconButton(
                           icon: Icon(
-                            FlatIconsMedium.close,
+                            FluentIcons.cancel,
                             color: theme.borderInputColor,
                             size: 24.0,
                           ),

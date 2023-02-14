@@ -25,7 +25,6 @@ dependencies:
       url: https://github.com/YehudaKremer/flutter_syntax_view.git
   hive: ^2.2.3
   http: ^0.13.5
-  icon_forest: ^1.1.8
   path_provider: ^2.0.12
   provider: ^6.0.5
   rename_app: ^1.1.0
