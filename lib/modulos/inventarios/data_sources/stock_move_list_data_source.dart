@@ -58,6 +58,19 @@ class StockMoveListDataSource extends DataGridSource {
           ),
         );
       }
+      if (dataGridCell.columnName == 'qtyDisponible') {
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          alignment: Alignment.centerRight,
+          child: Text(
+            dataGridCell.value == null
+                ? ''
+                : dataGridCell.value.toStringAsFixed(2),
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 11),
+          ),
+        );
+      }
 
       if (dataGridCell.columnName == 'productUomQty') {
         return Container(
@@ -204,6 +217,20 @@ cabecerasTablaStockMoveList(WidgetRef ref) {
               overflow: TextOverflow.ellipsis,
             ))),
     GridColumn(
+        // visible: move.state != 'done',
+        columnName: 'qtyDisponible',
+        allowEditing: true,
+        maximumWidth: 60.0,
+        minimumWidth: 40.0,
+        label: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              'Existencia',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+              overflow: TextOverflow.ellipsis,
+            ))),
+    GridColumn(
         columnName: 'productUomName',
         allowEditing: true,
         maximumWidth: 50.0,
@@ -265,6 +292,9 @@ List<DataGridRow> stockMoveListGetDataRows(List<StockMoveList> records) {
                 value: e.reservedAvailivity!.toDouble()),
             DataGridCell<double>(
                 columnName: 'qtyDone', value: e.quantityDone!.toDouble()),
+            DataGridCell<double>(
+                columnName: 'qtyDisponible',
+                value: e.qtyDisponible!.toDouble()),
             DataGridCell<String>(
                 columnName: 'productUomName', value: e.productUomName),
             DataGridCell<double>(

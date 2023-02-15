@@ -3,10 +3,9 @@ import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:neo/core/theme/controllers/settings.dart';
 import 'package:neo/modulos/widgets/link_text_span.dart';
 import 'package:neo/modulos/widgets/list_header.dart';
-import 'package:neo/widgets/error_dialog.dart';
 
 import '../../../../providers/providers_general.dart';
-import '../../api_repository/dar_tipo_provider.dart';
+import '../../../ventas/providers/sale_order_form_provider.dart';
 import '../../api_repository/picking_order_repository.dart';
 import '../../models/picking_model.dart';
 import '../../providers/picking_order_list_provider.dart';
@@ -238,13 +237,21 @@ class HeaderFormularioDespachos extends ConsumerWidget {
         ),
       ],
     ];
-
+    final ventaActualFormulario = ref.watch(saleOrderFormProvider);
     return FormPageHeader(
       link: link,
       number: "[${registroActual.id}]",
       title: "${registroActual.name}",
-
+      titleParent: (ref.watch(tipoPantalla) == "sale_despacho_form")
+          ? " ${ventaActualFormulario.name}   "
+          : "",
       // title: "[${registroActual.id}] ${registroActual.name}",
+      onPressedBackParent: () {
+        if (ref.watch(tipoPantalla) == "sale_despacho_form") {
+          ref.read(tipoPantalla.notifier).state = "sale_form";
+          ref.read(saleOrderVistaFormularioProvider.notifier).state = false;
+        }
+      },
       onPressedBack: () {
         if (ref.watch(tipoPantalla) == "sale_despacho_form") {
           ref.read(tipoPantalla.notifier).state = "sale_form";

@@ -18,6 +18,7 @@ class StockMoveList {
   int? pickingId;
   double? priceUnit;
   List<int>? moveLineIds;
+  double? qtyDisponible;
   double? productQty;
   String? productTracking;
   double? productUomQty;
@@ -57,6 +58,7 @@ class StockMoveList {
     this.productTracking,
     this.productUomQty,
     this.productId,
+    this.qtyDisponible,
     this.priceSubtotal,
     this.priceSubtotalFinal,
     this.salePriceUnit,
@@ -114,6 +116,7 @@ class StockMoveList {
       quantityDone: revisaVaciosFloat(map['quantity_done']),
       reservedAvailivity: revisaVaciosFloat(map['reserved_availability']),
       productId: revisaVaciosInt(map['product_id']),
+      qtyDisponible: revisaVaciosFloat(map['qty_disponible']),
       locationId: revisaVaciosInt(map['location_id']),
       locationDestId: revisaVaciosInt(map['location_dest_id']),
       productUom: revisaVaciosInt(map['product_uom']),
@@ -159,6 +162,7 @@ class StockMoveList {
     double? reservedAvailivity,
     double? quantityDone,
     int? productId,
+    double? qtyDisponible,
     int? locationId,
     double? priceSubtotal,
     double? priceSubtotalFinal,
@@ -186,6 +190,7 @@ class StockMoveList {
       productUomQty: productUomQty ?? this.productUomQty,
       reservedAvailivity: reservedAvailivity ?? this.reservedAvailivity,
       quantityDone: quantityDone ?? this.quantityDone,
+      qtyDisponible: qtyDisponible ?? this.qtyDisponible,
       productId: productId ?? this.productId,
       locationId: locationId ?? this.locationId,
       priceSubtotal: priceSubtotal ?? this.priceSubtotal,

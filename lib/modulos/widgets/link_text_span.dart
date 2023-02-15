@@ -33,3 +33,11 @@ Future<void> launchInBrowserPdf(Uri url) async {
     throw 'Could not launch $url';
   }
 }
+
+class LinkTitletSpan extends TextSpan {
+  LinkTitletSpan({TextStyle? style, String? text, void Function()? onPressed})
+      : super(
+            style: style,
+            text: text,
+            recognizer: TapGestureRecognizer()..onTap = onPressed);
+}

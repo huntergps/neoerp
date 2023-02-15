@@ -100,7 +100,8 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                       ),
                     ),
                   ],
-                  if (registroActual!.state == 'assigned') ...[
+                  if ((registroActual!.state == 'confirmed') ||
+                      (registroActual!.state == 'assigned')) ...[
                     if (modoEdicion) ...[
                       const SizedBox(width: 8),
                       Tooltip(
@@ -139,6 +140,11 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                           },
                         ),
                       ),
+                    ],
+                  ],
+                  if (registroActual!.state == 'assigned') ...[
+                    if (modoEdicion) ...[
+                      const SizedBox(width: 8),
                       const SizedBox(width: 4),
                       Tooltip(
                         message: 'Anular reserva de Despacho',
@@ -185,8 +191,8 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                   Row(
                     children: [
                       TextLabel(
-                          width: 240,
-                          widthValue: 240,
+                          width: 280,
+                          widthValue: 280,
                           label: 'Bod.Origen',
                           value: '${registroActual!.locationName}'),
                       const SizedBox(width: 8),
@@ -221,14 +227,17 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                       if (modoEdicion) ...[
                         TextLabel(
                             // fontSizeValue: 11,
-                            width: 240,
-                            widthValue: 240,
+                            width: 280,
+                            widthValue: 280,
                             label: 'Responsable',
                             value: '${registroActual!.userName}'),
                       ] else ...[
                         ComboSearch<UserList>(
-                          constraints: const BoxConstraints(maxWidth: 250),
-                          title: 'Usuario Responsable',
+                          constraints: const BoxConstraints(
+                            maxWidth: 280,
+                            maxHeight: 36,
+                          ),
+                          title: 'Responsable',
                           selectedItem: userActual,
                           asyncItems: (String busqueda) async {
                             return getDataComboUsuario(ref, busqueda);
@@ -312,15 +321,18 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                         const SizedBox(width: 8),
                         if (modoEdicion) ...[
                           TextLabel(
-                              width: 100,
-                              widthValue: 100,
+                              width: 130,
+                              widthValue: 130,
                               label: 'Ruc',
                               value: '${registroActual!.clienteVentaRuc}'),
                         ] else ...[
                           ComboSearch<PartnerList>(
-                            constraints: const BoxConstraints(maxWidth: 130),
+                            constraints: const BoxConstraints(
+                              maxWidth: 149,
+                              maxHeight: 34,
+                            ),
 
-                            title: 'Transportista',
+                            title: 'Ruc',
                             selectedItem: clienteActual,
                             asyncItems: (String busqueda) async {
                               return getDataComboTransportista(ref, busqueda);

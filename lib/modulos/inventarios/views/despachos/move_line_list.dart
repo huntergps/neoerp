@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:neo/modulos/inventarios/api_repository/move_repository.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -51,8 +52,24 @@ class _StockMoveLineListGridState extends ConsumerState<StockMoveLineListGrid> {
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           headerRowHeight: 26,
           rowHeight: 30,
-          // allowEditing: true,
+          allowEditing: true,
+          navigationMode: GridNavigationMode.cell,
           editingGestureType: EditingGestureType.tap,
+          // onCurrentCellActivated: (RowColumnIndex currentRowColumnIndex,
+          //     RowColumnIndex previousRowColumnIndex) {
+          //   //  dataGridControllerStockMoveLineList.selectedIndex =
+          //   //         details.rowColumnIndex.rowIndex - 1;
+          //   final index = currentRowColumnIndex.rowIndex;
+          //   seleccionarMoveLineDeLista(
+          //       context, ref, moveLineListdatasource, index);
+          // },
+          onCellTap: (DataGridCellTapDetails details) {
+            dataGridControllerStockMoveLineList.selectedIndex =
+                details.rowColumnIndex.rowIndex - 1;
+            final index = details.rowColumnIndex.rowIndex;
+            seleccionarMoveLineDeLista(
+                context, ref, moveLineListdatasource, index);
+          },
         ));
   }
 }

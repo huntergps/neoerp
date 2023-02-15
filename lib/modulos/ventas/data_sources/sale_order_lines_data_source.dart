@@ -25,11 +25,6 @@ class SaleOrderLineDataSource extends DataGridSource {
     return estiloCeldasSaleOrderLine(row);
   }
 
-  void updateDataGridSource() {
-    debugPrint("***** updateDataGridSource");
-    notifyListeners();
-  }
-
 //**************************************************************************************/
 // COMO SE QUIERE VISUALIZAR LOS DATOS DENTRO DE LAS CELDAS DE SALEORDERLINE
 //**************************************************************************************/

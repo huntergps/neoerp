@@ -4,9 +4,14 @@
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neo/modulos/entidades/api_repository/partner_repository.dart';
 import 'package:neo/modulos/inventarios/models/stock_move_list_model.dart';
+import 'package:neo/modulos/inventarios/vars/picking_order_global_vars.dart';
+import 'package:neo/modulos/inventarios/widgets/combo_search.dart';
+import 'package:neo/modulos/widgets/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../common/models/lot_model.dart';
 import '../api_repository/dar_tipo_provider.dart';
 import '../api_repository/move_line_repository.dart';
 import '../models/stock_move_line_list_model.dart';
@@ -19,6 +24,7 @@ class StockMoveLineListDataSource extends DataGridSource {
     recordData = stockMoveListGetDataRows(records!);
   }
   List<StockMoveLineList>? records;
+
   List<DataGridRow> recordData = [];
   dynamic newCellValue;
   TextEditingController editingController = TextEditingController();
@@ -31,49 +37,114 @@ class StockMoveLineListDataSource extends DataGridSource {
     return estiloCeldasStockMoveLineList(row);
   }
 
+  // @override
+  // void onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
+  //     GridColumn column) {
+  //   final dynamic oldValue = dataGridRow
+  //           .getCells()
+  //           .firstWhere((DataGridCell dataGridCell) =>
+  //               dataGridCell.columnName == column.columnName)
+  //           .value ??
+  //       '';
+
+  //   if (newCellValue == null || oldValue == newCellValue) {
+  //     return;
+  //   }
+
+  //   final int dataRowIndex = rows.indexOf(dataGridRow);
+
+  //   if (newCellValue == null || oldValue == newCellValue) {
+  //     return;
+  //   }
+  //   if (column.columnName == 'name') {
+  //     recordData[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+  //         DataGridCell<String>(columnName: 'name', value: newCellValue);
+  //     records![dataRowIndex].lotIdName = newCellValue.toString();
+  //     records![dataRowIndex].lotName = newCellValue.toString();
+  //   }
+  //   print("***********>>>>");
+  //   newCellValue = null;
+  // }
+
   @override
   Widget? buildEditWidget(DataGridRow dataGridRow,
       RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
-    // Text going to display on editable widget
-    final String displayText = dataGridRow
-            .getCells()
-            .firstWhere((DataGridCell dataGridCell) =>
-                dataGridCell.columnName == column.columnName)
-            .value
-            ?.toString() ??
-        '';
-
-    // The new cell value must be reset.
-    // To avoid committing the [DataGridCell] value that was previously edited
-    // into the current non-modified [DataGridCell].
     newCellValue = null;
+    return Consumer(
+      builder: (context, ref, child) {
+        final StockMoveList move = darMoveActualFormulario(ref);
+        final productId = move.productId!.toInt();
+        final locationId = revisaVaciosInt(move.locationId);
 
-    final bool isNumericType =
-        column.columnName == 'productUomQty' || column.columnName == 'qtyDone';
+        final StockLot loteActual =
+            darLoteActualFormularioProviderNotifier(ref).state;
+        final StockMoveLineList lineaActual =
+            darMoveLineActualFormularioProviderNotifier(ref).state;
 
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
-      child: TextBox(
-        autofocus: true,
-        controller: editingController..text = displayText,
-        textAlign: isNumericType ? TextAlign.right : TextAlign.left,
-        keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
-        onChanged: (String value) {
-          if (value.isNotEmpty) {
-            if (isNumericType) {
-              newCellValue = int.parse(value);
-            } else {
-              newCellValue = value;
-            }
-          } else {
-            newCellValue = null;
-          }
-        },
-        onSubmitted: (String value) {
-          submitCell();
-        },
-      ),
+        final modoEdicion = ref.watch(pickingOrderEditarProvider);
+        return ComboSearch<StockLot>(
+          constraints: const BoxConstraints(maxWidth: 190),
+          enabled: true,
+          // dropKey: seriesDropKey,
+          // title: 'Codigo de Barras',
+          selectedItem: loteActual,
+          asyncItems: (String busqueda) async {
+            return getDataComboCodBar(
+                ref, busqueda, productId, locationId, move.moveLineIdsData);
+          },
+          filterFn: (lote, filter) {
+            return (lote.name!.toLowerCase().contains(filter.toLowerCase()));
+          },
+          itemBuilder: itemBuilderListadoSeries,
+          itemAsString: (StockLot? data) {
+            return '${data?.name}';
+          },
+          onChanged: (StockLot? data) {
+            loteActual.id = data!.id;
+            loteActual.name = data.name;
+            // lineaActual.lotId = data!.id;
+            // lineaActual.lotIdName = data.name;
+            // lineaActual.lotName = data.name;
+            final mMovimientoListado = darMoveListProviderNotifier(ref);
+
+            final mMovimientoLineasListadoNotifier =
+                darMoveLineListProviderNotifier(ref);
+            mMovimientoLineasListadoNotifier.updateRegistro(
+                lineaActual.copyWith(
+                    lotId: data.id, lotIdName: data.name, lotName: data.name));
+            var movId = move.id!.toInt();
+            mMovimientoListado.ponerLineas(
+                movId, mMovimientoLineasListadoNotifier.getRegistros());
+            final mMovimientoActual =
+                darMoveActualFormularioProviderNotifier(ref);
+            mMovimientoActual.state = mMovimientoListado.getRegistro(movId);
+            //mMovimientoActual.state = mMovimientoListado.getRegistro(movId);
+            //submitCell();
+            // modificarMoveLine(
+            //     context,
+            //     ref,
+            //     lineaActual.copyWith(
+            //         lotId: data!.id, lotIdName: data.name, lotName: data.name));
+            // agregarAListadoDeMoveLine(
+            //   context,
+            //   ref,
+            //   StockMoveLineList(
+            //     id: 0,
+            //     lotId: data!.id,
+            //     lotName: '${data.name}',
+            //     lotIdName: '${data.name}',
+            //     productUomQty: 1.0,
+            //     qtyDone: 0.0,
+            //     productTracking: move.productTracking,
+            //     locationId: move.locationId,
+            //     locationDestId: move.locationDestId,
+            //     productUomId: move.productUom,
+            //   ),
+            // );
+          },
+          compareFn: (i, s) => i.isEqual(s),
+        );
+      },
     );
   }
 }
@@ -82,14 +153,6 @@ class StockMoveLineListDataSource extends DataGridSource {
 //**************************************************************************************/
 
 DataGridRowAdapter estiloCeldasStockMoveLineList(DataGridRow row) {
-  // final moveLine = row.getCells();
-  // if (moveLine.isNotEmpty) {
-  //   final tracking =
-  //       moveLine.firstWhere((e) => e.columnName == 'productTracking');
-  // }
-  // .firstWhere((e) => e.columnName == 'productTracking');
-  // final tracking = moveLine.value;
-  // print(tracking);
   final DataGridCell<dynamic> mProductTracking =
       row.getCells().firstWhere((cel) => cel.columnName == 'productTracking');
   final String tracking = mProductTracking.value;
@@ -99,6 +162,10 @@ DataGridRowAdapter estiloCeldasStockMoveLineList(DataGridRow row) {
       if (tracking != 'serial') {
         return Container();
       }
+      // return Text(
+      //   dataGridCell.value.toString(),
+      //   style: TextStyle(fontSize: 10),
+      // );
       return ButtonDeleteMoveLine(id: dataGridCell.value);
     }
     if (dataGridCell.columnName == 'productQty') {
@@ -183,14 +250,13 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
       minimumWidth: 40.0,
       maximumWidth: 40.0,
       label: Container(
-        // padding: EdgeInsets.only(bottom: 15.0),
         alignment: Alignment.center,
         child: const ButtonDeleteAllMoveLine(),
       ),
     ),
     GridColumn(
         columnName: 'name',
-        allowEditing: true,
+        allowEditing: modoEdicion,
         columnWidthMode: ColumnWidthMode.lastColumnFill,
         minimumWidth: 220.0,
         label: Container(
@@ -200,23 +266,10 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
               'Detalle',
               style: TextStyle(fontSize: 12, color: Colors.white),
             ))),
-    // if (masterController.features.contains('precio_unitario')) ...[
-    // GridColumn(
-    //     columnName: 'productQty',
-    //     allowEditing: true,
-    //     maximumWidth: 70.0,
-    //     minimumWidth: 60.0,
-    //     label: Container(
-    //         padding: EdgeInsets.symmetric(horizontal: 6.0),
-    //         alignment: Alignment.centerRight,
-    //         child: Text(
-    //           'Cantidad',
-    //           style: TextStyle(fontSize: 12, color: Colors.white),
-    //         ))),
     GridColumn(
         visible: move.state != 'done',
         columnName: 'productUomQty',
-        allowEditing: true,
+        allowEditing: false,
         maximumWidth: 90.0,
         minimumWidth: 80.0,
         label: Container(
@@ -229,7 +282,7 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
     GridColumn(
       visible: move.state == 'done',
       columnName: 'qtyDone',
-      allowEditing: true,
+      allowEditing: false,
       maximumWidth: 70.0,
       minimumWidth: 60.0,
       label: Container(
@@ -252,6 +305,19 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
             'Hecho',
             style: TextStyle(fontSize: 12, color: Colors.white),
           )),
+    ),
+    GridColumn(
+      visible: true,
+      columnName: 'lotId',
+      maximumWidth: 70.0,
+      minimumWidth: 60.0,
+      label: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          alignment: Alignment.centerRight,
+          child: const Text(
+            'lotId',
+            style: TextStyle(fontSize: 12, color: Colors.white),
+          )),
     )
   ];
   return mCab;
@@ -265,17 +331,15 @@ List<DataGridRow> stockMoveListGetDataRows(List<StockMoveLineList> records) {
   return records
       .map<DataGridRow>((e) => DataGridRow(cells: [
             DataGridCell<int>(columnName: 'id', value: e.id),
-
             DataGridCell<String>(
                 columnName: 'name',
                 value: e.lotId!.toInt() == 0 ? e.lotName : e.lotIdName),
-            // DataGridCell<double>(
-            //     columnName: 'productQty', value: e.productQty!.toDouble()),
             DataGridCell<double>(
                 columnName: 'productUomQty', value: e.productUomQty),
             DataGridCell<double>(columnName: 'qtyDone', value: e.qtyDone),
             DataGridCell<String>(
                 columnName: 'productTracking', value: e.productTracking),
+            DataGridCell<String>(columnName: 'lotId', value: '${e.lotId}'),
           ]))
       .toList();
 }
@@ -285,8 +349,6 @@ class ButtonDeleteAllMoveLine extends ConsumerWidget {
     super.key,
     // required this.id,
   });
-  // final int id;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = FluentTheme.of(context);
@@ -296,7 +358,7 @@ class ButtonDeleteAllMoveLine extends ConsumerWidget {
         icon: Icon(
           FluentIcons.delete,
           color: iconColor,
-          size: 20,
+          size: 15,
         ),
         onPressed: () {
           quitarMoveLineDeLista(context, ref, 0, vaciarTodo: true);

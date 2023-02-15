@@ -1,7 +1,12 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart'
-    show InputDecoration, Material, OutlineInputBorder;
+    show
+        InputDecoration,
+        Material,
+        OutlineInputBorder,
+        UnderlineInputBorder,
+        InputBorder;
 import 'package:neo/modulos/common/models/lot_model.dart';
 import 'package:neo/modulos/common/models/user_model.dart';
 import 'package:neo/modulos/entidades/models/partner_model.dart';
@@ -35,7 +40,8 @@ class ComboSearch<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = FluentTheme.of(context);
-
+    final themeCaption = theme.typography.caption!;
+    final titleColor = themeCaption.color!.withOpacity(0.5);
     return ConstrainedBox(
         constraints: constraints ?? const BoxConstraints(maxWidth: 10),
         child: Material(
@@ -44,21 +50,40 @@ class ComboSearch<T> extends StatelessWidget {
           key: dropKey,
           selectedItem: selectedItem,
           dropdownDecoratorProps: DropDownDecoratorProps(
-              baseStyle: theme.typography.caption,
-              dropdownSearchDecoration: const InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(8, 4, 8, 8),
-                border: OutlineInputBorder(),
+            baseStyle: theme.typography.caption!.copyWith(
+              fontSize: 12,
+            ),
+            dropdownSearchDecoration: title != null
+                ? InputDecoration(
+                    isDense: true,
+                    labelText: title,
+                    labelStyle:
+                        themeCaption.copyWith(fontSize: 16, color: titleColor),
+                    contentPadding: const EdgeInsets.fromLTRB(1, 1, 1, 1),
+                    border: InputBorder.none)
+                : const InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(1, 1, 1, 1),
+                    border: OutlineInputBorder()),
+          ),
+          dropdownButtonProps: DropdownButtonProps(
+              // visualDensity: VisualDensity.compact,
+              isVisible: true,
+              padding: const EdgeInsets.all(1.0),
+              icon: Icon(
+                FluentIcons.search,
+                color: theme.accentColor.lightest,
+                size: 16,
               )),
           popupProps: PopupProps.dialog(
             title: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 '$title:',
-                style: theme.typography.bodyStrong,
+                style: theme.typography.caption,
               ),
             ),
             searchFieldProps: TextFieldProps(
-              style: theme.typography.body,
+              style: theme.typography.caption,
               autofocus: true,
             ),
             showSearchBox: true,
@@ -84,13 +109,20 @@ Widget listadoTransportistas(
 ) {
   final theme = FluentTheme.of(context);
 
-  return Mica(
+  return ConstrainedBox(
+    constraints: const BoxConstraints(maxHeight: 150),
     child: Padding(
       padding:
           const EdgeInsets.only(left: 8.0, right: 10.0, top: 8.0, bottom: 4.0),
       child: Card(
+        padding: const EdgeInsets.all(2),
+        backgroundColor: theme.micaBackgroundColor,
+        borderColor: theme.accentColor.darkest,
         child: ListTile(
-          title: Text(item!.name ?? ''),
+          title: Text(
+            item!.name ?? '',
+            style: theme.typography.body!.copyWith(color: theme.accentColor),
+          ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -122,18 +154,41 @@ Widget itemBuilderListadoSeries(
   StockLot? item,
   bool isSelected,
 ) {
+  final theme = FluentTheme.of(context);
+
   return SingleChildScrollView(
-    padding: const EdgeInsets.all(8.0),
+    // padding: const EdgeInsets.all(2.0),
     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
 
-    // child: Mica(
     child: Padding(
       padding:
           const EdgeInsets.only(left: 8.0, right: 10.0, top: 8.0, bottom: 8.0),
       child: Card(
+        backgroundColor: theme.micaBackgroundColor,
+        padding: const EdgeInsets.all(2),
+        borderColor: theme.accentColor.darkest,
         child: ListTile(
-          title: Text(item?.name ?? ''),
-          subtitle: Text(item!.locationIds.toString()),
+          title: Text(
+            item?.name ?? '',
+            style: theme.typography.body!.copyWith(color: theme.accentColor),
+          ),
+          // subtitle: Text('Bodega: ${item!.locationIds.toString()}'),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(item!.id.toString()),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Bodega: ${item!.locationIds.toString()}',
+                      style: theme.typography.body,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -146,14 +201,23 @@ Widget listadoUsuarios(
   UserList? item,
   bool isSelected,
 ) {
-  return Mica(
+  final theme = FluentTheme.of(context);
+
+  return ConstrainedBox(
+    constraints: const BoxConstraints(maxHeight: 100),
     child: Padding(
       padding:
-          const EdgeInsets.only(left: 8.0, right: 10.0, top: 8.0, bottom: 4.0),
+          const EdgeInsets.only(left: 8.0, right: 10.0, top: 8.0, bottom: 1.0),
       child: Card(
+        padding: const EdgeInsets.all(2),
+        backgroundColor: theme.micaBackgroundColor,
+        borderColor: theme.accentColor.darkest,
         child: ListTile(
           // selected: isSelected,
-          title: Text(item?.name ?? ''),
+          title: Text(
+            item?.name ?? '',
+            style: theme.typography.body!.copyWith(color: theme.accentColor),
+          ),
           subtitle: Text(item?.login?.toString() ?? ''),
         ),
       ),

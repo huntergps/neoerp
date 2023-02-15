@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neo/modulos/inventarios/models/stock_move_list_model.dart';
 import 'package:neo/widgets/error_dialog.dart';
 
 import '../../../providers/dio_provider.dart';
@@ -150,10 +151,20 @@ void putDespachoInProviders(WidgetRef ref, dynamic data) {
   var mMovimientoListado = darMoveListProviderNotifier(ref);
   var mDespacho = darDespachoActualFormularioProviderNotifier(ref);
   var mMovimiento = darMoveActualFormularioProviderNotifier(ref);
+  mMovimiento.state = mMovimientoListado.getRegistros().isNotEmpty
+      ? mMovimientoListado.getRegistros().first
+      : StockMoveList();
+
+  final mMovimientoLineasListadoNotifier = darMoveLineListProviderNotifier(ref);
+  if (mMovimientoListado.getRegistros().isNotEmpty) {
+    mMovimientoListado.ponerLineas(
+        mMovimiento.state.id!, mMovimientoLineasListadoNotifier.getRegistros());
+  }
 
   mDespacho.state = PickingOrder.fromMap(data);
-  mMovimientoListado.cargaRegistros(mDespacho.state.moveLinesData);
-  mMovimiento.state = mMovimientoListado.getRegistros().first;
+  if (mMovimientoListado.getRegistros().isNotEmpty) {
+    mMovimientoListado.cargaRegistros(mDespacho.state.moveLinesData);
+  }
 }
 
 void getRemoteRecordDespacho(

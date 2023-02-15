@@ -12,6 +12,8 @@ class FormPageHeader extends ConsumerWidget {
     required this.number,
     required this.onPressedBack,
     required this.link,
+    this.titleParent,
+    this.onPressedBackParent,
     this.commandBarItems,
     this.extraInfo,
   }) : super(key: key);
@@ -19,9 +21,12 @@ class FormPageHeader extends ConsumerWidget {
   final List<CommandBarItem>? commandBarItems;
 
   final String title;
+  final String? titleParent;
+
   final String number;
   final String link;
   final void Function()? onPressedBack;
+  final void Function()? onPressedBackParent;
   final Widget? extraInfo;
 
   @override
@@ -43,6 +48,15 @@ class FormPageHeader extends ConsumerWidget {
             '$number  ',
             style: theme.typography.title!
                 .apply(color: theme.accentColor, fontSizeFactor: 0.5),
+          ),
+          RichText(
+            text: LinkTitletSpan(
+              style: theme.typography.title!.apply(
+                  color: theme.accentColor.darker,
+                  fontSizeFactor: isPhone ? 0.45 : 0.5),
+              text: titleParent,
+              onPressed: onPressedBackParent,
+            ),
           ),
           RichText(
             text: LinkTextSpan(

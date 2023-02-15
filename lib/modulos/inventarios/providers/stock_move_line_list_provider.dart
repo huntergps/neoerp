@@ -10,7 +10,13 @@ import '../models/stock_move_line_list_model.dart';
 class StockMoveLineListNotifier extends StateNotifier<List<StockMoveLineList>> {
   StockMoveLineListNotifier() : super([]);
 
-  ///leer los registros desde un conjunto de datos y lo pone la lista
+  void updateRegistro(StockMoveLineList? moveLineData) {
+    state = [
+      for (final move in state)
+        if (move.id == moveLineData!.id) moveLineData else move,
+    ];
+  }
+
   void newRegistro(StockMoveLineList data) {
     state = [...state, data];
   }

@@ -76,9 +76,11 @@ void modificarMoveLine(
         darMoveLineActualFormularioProviderNotifier(ref);
 
     mLineaMovimientoActual.state = lineaModificada!;
-    mMovimientoLineasListado.getRegistros().first = lineaModificada;
-
-    // mMovimientoLineasListado.newRegistro(newLinea!);
+    mMovimientoLineasListado
+        .getRegistros()
+        .firstWhere((e) => e.id == lineaModificada.id);
+    // first = lineaModificada;
+    // mMovimientoLineasListado.updateRegistro(lineaModificada);
     var movId = mMovimientoActual.state.id!.toInt();
     mMovimientoListado.ponerLineas(
         movId, mMovimientoLineasListado.getRegistros());

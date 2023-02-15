@@ -47,6 +47,12 @@ StateController<StockMoveLineList> darMoveLineActualFormularioProviderNotifier(
       : ref.watch(lineaMoveActualDesdeDespachosProvider.notifier);
 }
 
+StockMoveLineList darMoveLineActual(WidgetRef ref) {
+  return (ref.watch(tipoPantalla) == "sale_despacho_form")
+      ? ref.watch(lineaMoveActualDesdeVentasProvider)
+      : ref.watch(lineaMoveActualDesdeDespachosProvider);
+}
+
 StateController<PickingOrder> darDespachoActualFormularioProviderNotifier(
     WidgetRef ref) {
   return (ref.watch(tipoPantalla) == "sale_despacho_form")

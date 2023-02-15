@@ -70,7 +70,6 @@ class _PickingOrderGridState extends ConsumerState<PickingOrderGrid> {
               context, ref, pickingOrdersdatasource, index);
         },
         onCellDoubleTap: (DataGridCellDoubleTapDetails details) {
-          // ref.read(vistaFormularioProvider.notifier).state = true;
           final index = details.rowColumnIndex.rowIndex;
           pickingOrderListdataGridController.selectedIndex =
               details.rowColumnIndex.rowIndex - 1;
