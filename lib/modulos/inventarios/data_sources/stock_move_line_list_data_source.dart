@@ -119,7 +119,7 @@ class StockMoveLineListDataSource extends DataGridSource {
                 darMoveActualFormularioProviderNotifier(ref);
             mMovimientoActual.state = mMovimientoListado.getRegistro(movId);
             //mMovimientoActual.state = mMovimientoListado.getRegistro(movId);
-            //submitCell();
+            submitCell();
             // modificarMoveLine(
             //     context,
             //     ref,

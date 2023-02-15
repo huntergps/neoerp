@@ -147,24 +147,33 @@ void setRemoteRecordDespacho(
   }
 }
 
+void putDespachoInProvidersNew(WidgetRef ref, dynamic data) {
+  var mMovimientoListado = darMoveListProviderNotifier(ref);
+  var mDespacho = darDespachoActualFormularioProviderNotifier(ref);
+  var mMovimiento = darMoveActualFormularioProviderNotifier(ref);
+
+  mDespacho.state = PickingOrder.fromMap(data);
+
+  mMovimiento.state = mMovimientoListado.getRegistros().isNotEmpty
+      ? mMovimientoListado.getRegistros().first
+      : StockMoveList();
+  final mMovimientoLineasListadoNotifier = darMoveLineListProviderNotifier(ref);
+  mMovimientoListado.ponerLineas(
+      mMovimiento.state.id!, mMovimientoLineasListadoNotifier.getRegistros());
+  mMovimientoListado.cargaRegistros(mDespacho.state.moveLinesData);
+}
+
 void putDespachoInProviders(WidgetRef ref, dynamic data) {
   var mMovimientoListado = darMoveListProviderNotifier(ref);
   var mDespacho = darDespachoActualFormularioProviderNotifier(ref);
   var mMovimiento = darMoveActualFormularioProviderNotifier(ref);
-  mMovimiento.state = mMovimientoListado.getRegistros().isNotEmpty
-      ? mMovimientoListado.getRegistros().first
-      : StockMoveList();
-
   final mMovimientoLineasListadoNotifier = darMoveLineListProviderNotifier(ref);
-  if (mMovimientoListado.getRegistros().isNotEmpty) {
-    mMovimientoListado.ponerLineas(
-        mMovimiento.state.id!, mMovimientoLineasListadoNotifier.getRegistros());
-  }
 
   mDespacho.state = PickingOrder.fromMap(data);
-  if (mMovimientoListado.getRegistros().isNotEmpty) {
-    mMovimientoListado.cargaRegistros(mDespacho.state.moveLinesData);
-  }
+  mMovimientoListado.cargaRegistros(mDespacho.state.moveLinesData);
+  mMovimiento.state = mMovimientoListado.getRegistros().first;
+  mMovimientoLineasListadoNotifier
+      .cargaRegistros(mMovimiento.state.moveLineIdsData);
 }
 
 void getRemoteRecordDespacho(

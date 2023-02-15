@@ -43,7 +43,7 @@ class _DespachoFormFormState extends ConsumerState<DespachoForm> {
     final double alto =
         moves!.length > 10 ? 31 * moves.length.toDouble() : altoNormal;
     if (registroActual == null) {
-      return Center(
+      return const Center(
         child: Card(
           child: ProgressBar(),
         ),
