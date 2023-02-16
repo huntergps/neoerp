@@ -8,4 +8,5 @@ var stateSaleOrderField = {
   'posted': 'Hecho',
   'rejected': 'Rechazado',
   'cancel': 'Cancelado',
+  'assigned': 'Preparado',
 };

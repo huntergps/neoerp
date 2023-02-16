@@ -181,7 +181,7 @@ Widget itemBuilderListadoSeries(
                 children: [
                   Expanded(
                     child: Text(
-                      'Bodega: ${item!.locationIds.toString()}',
+                      'Bodega: ${item.locationIds.toString()}',
                       style: theme.typography.body,
                     ),
                   ),

@@ -5,6 +5,8 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - printing (1.0.0):
+    - FlutterMacOS
   - screen_retriever (0.0.1):
     - FlutterMacOS
   - system_theme (0.0.1):
@@ -18,6 +20,7 @@ DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - macos_window_utils (from `Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos`)
+  - printing (from `Flutter/ephemeral/.symlinks/plugins/printing/macos`)
   - screen_retriever (from `Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos`)
   - system_theme (from `Flutter/ephemeral/.symlinks/plugins/system_theme/macos`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
@@ -30,6 +33,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/macos_window_utils/macos
   path_provider_foundation:
     :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos
+  printing:
+    :path: Flutter/ephemeral/.symlinks/plugins/printing/macos
   screen_retriever:
     :path: Flutter/ephemeral/.symlinks/plugins/screen_retriever/macos
   system_theme:
@@ -43,6 +48,7 @@ SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   macos_window_utils: 933f91f64805e2eb91a5bd057cf97cd097276663
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
+  printing: e4b7e232ff3d5d50a70b20d959aa71035a5c31f9
   screen_retriever: 59634572a57080243dd1bf715e55b6c54f241a38
   system_theme: c7b9f6659a5caa26c9bc2284da096781e9a6fcbc
   url_launcher_macos: c04e4fa86382d4f94f6b38f14625708be3ae52e2

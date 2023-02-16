@@ -35,6 +35,25 @@ class SaleOrderListDataSource extends DataGridSource {
 
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
+      Color getColor() {
+        if (dataGridCell.columnName == 'estadoDespachos') {
+          if (dataGridCell.value == 'Despachado') {
+            return Colors.green.lightest;
+          }
+          if (dataGridCell.value == 'Borrador') {
+            return Colors.red.lightest;
+          }
+          if (dataGridCell.value == 'Para despachar') {
+            return Colors.blue.lightest;
+          }
+          if (dataGridCell.value == 'Sin despachos') {
+            return Colors.red.lightest;
+          }
+        }
+
+        return Colors.transparent;
+      }
+
       if (dataGridCell.columnName == 'amountTotal') {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
@@ -49,6 +68,7 @@ class SaleOrderListDataSource extends DataGridSource {
         );
       } else {
         return Container(
+          color: getColor(),
           padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -162,6 +182,20 @@ cabecerasTablaSaleOrder(BuildContext context) {
               'Estado',
               style: TextStyle(fontSize: 10, color: theme.activeColor),
             ))),
+    GridColumn(
+        columnName: 'estadoDespachos',
+        allowSorting: false,
+        allowEditing: false,
+        minimumWidth: 60.0,
+        columnWidthMode: ColumnWidthMode.fill,
+        maximumWidth: isPhone ? 60 : 120,
+        label: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Estado Despachos',
+              style: TextStyle(fontSize: 10, color: theme.activeColor),
+            ))),
   ];
   return mCab;
 }
@@ -185,7 +219,30 @@ List<DataGridRow> saleOrderGetDataRows(List<SaleOrderList> records) {
             DataGridCell<String>(
                 columnName: 'paymentTermName', value: e.paymentTermName),
             DataGridCell<String>(
-                columnName: 'state', value: stateSaleOrderField[e.state])
+                columnName: 'state', value: stateSaleOrderField[e.state]),
+            DataGridCell<String>(
+                columnName: 'estadoDespachos',
+                value: getEstadoDespacho(
+                  e.estadoDespachos.toString(),
+                )),
           ]))
       .toList();
+}
+
+String getEstadoDespacho(String estados) {
+  if (estados.isEmpty) {
+    return 'Sin despachos';
+  }
+  final estadosList = estados.split(',').map((e) => e.trim()).toList();
+  if (estadosList.any((e) => ['draft', 'confirmed'].contains(e))) {
+    return 'Borrador';
+  } else if (estadosList.any((e) => ['confirmed', 'assigned'].contains(e))) {
+    return 'Para despachar';
+  } else if (estadosList.contains('done')) {
+    return 'Despachado';
+  } else if (estados.contains('cancel')) {
+    return 'Cancelado';
+  } else {
+    return 'Sin despachos';
+  }
 }

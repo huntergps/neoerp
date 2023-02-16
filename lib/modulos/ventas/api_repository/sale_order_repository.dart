@@ -140,6 +140,39 @@ void getRemoteListSaleOrders(
   }
 }
 
+Future<String?> getVentaReport(
+  BuildContext context,
+  WidgetRef ref,
+  int id,
+) async {
+  ref.watch(dioLoadingProvider.notifier).state = true;
+  final dioClient = ref.watch(dioHttpProvider);
+  final String getTokenUrl = '/api/sale_order_report/$id';
+  final url = dioClient.options.baseUrl + getTokenUrl;
+  var errorMsn = "";
+  try {
+    final result = await dioClient.get(url);
+    if (result.statusCode == 200) {
+      // Decodificar el contenido del PDF de Base64
+      final base64PDF = result.data as String;
+      ref.watch(dioLoadingProvider.notifier).state = false;
+      return base64PDF;
+    }
+  } on DioError catch (e) {
+    if (e.response != null) {
+      final mdata = e.response!.data;
+      errorMsn = " ${mdata['error_descrip']}";
+      showErrorDialog(context, 'Error', errorMsn);
+    } else {
+      errorMsn = " ${e.message}";
+      showErrorDialog(context, 'Error', errorMsn);
+    }
+    ref.read(dioErrorMsnProvider.notifier).state = errorMsn;
+  }
+
+  ref.watch(dioLoadingProvider.notifier).state = false;
+  return null;
+}
 // void getRemoteOneSaleOrder(BuildContext context, WidgetRef ref, int id) async {
 //   final dioClient = ref.watch(dioHttpProvider);
 //   final String getTokenUrl = '/api/sale.order/$id';

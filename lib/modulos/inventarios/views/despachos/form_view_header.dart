@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:neo/core/theme/controllers/settings.dart';
 import 'package:neo/modulos/widgets/link_text_span.dart';
 import 'package:neo/modulos/widgets/list_header.dart';
+import 'package:printing/printing.dart';
 
 import '../../../../providers/providers_general.dart';
 import '../../../ventas/providers/sale_order_form_provider.dart';
@@ -213,8 +216,17 @@ class HeaderFormularioDespachos extends ConsumerWidget {
               color: theme.accentColor.darker,
               size: 24.0,
             ),
-            onPressed: () {
-              launchInBrowserPdf(Uri.parse(linkPdf));
+            onPressed: () async {
+              var despachoId = registroActual.id?.toInt() ?? 0;
+              final base64PDF =
+                  await getDespachoReport(context, ref, despachoId);
+              if (base64PDF != null) {
+                final bytes = base64.decode(base64PDF);
+                await Printing.layoutPdf(
+                  onLayout: (_) => bytes,
+                );
+              }
+              // launchInBrowserPdf(Uri.parse(linkPdf));
             },
           ),
         ),

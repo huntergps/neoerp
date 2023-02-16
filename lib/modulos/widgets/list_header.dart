@@ -50,21 +50,39 @@ class FormPageHeader extends ConsumerWidget {
                 .apply(color: theme.accentColor, fontSizeFactor: 0.5),
           ),
           RichText(
-            text: LinkTitletSpan(
-              style: theme.typography.title!.apply(
-                  color: theme.accentColor.darker,
-                  fontSizeFactor: isPhone ? 0.45 : 0.5),
-              text: titleParent,
-              onPressed: onPressedBackParent,
-            ),
-          ),
-          RichText(
             text: LinkTextSpan(
               style: theme.typography.title!.apply(
                   color: theme.accentColor,
                   fontSizeFactor: isPhone ? 0.45 : 0.5),
               url: link,
               text: title,
+            ),
+          ),
+          Expanded(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 100, minWidth: 100),
+              child: Tooltip(
+                message: '$titleParent',
+                style: const TooltipThemeData(preferBelow: true),
+                child: IconButton(
+                  icon: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        FluentIcons.back,
+                        color: Colors.blue.lighter,
+                        size: 24.0,
+                      ),
+                      Icon(
+                        FluentIcons.assessment_group,
+                        color: Colors.blue.lighter,
+                        size: 24.0,
+                      ),
+                    ],
+                  ),
+                  onPressed: onPressedBackParent,
+                ),
+              ),
             ),
           ),
         ],
