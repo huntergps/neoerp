@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:neo/core/utils/device_info.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
+import 'package:neo/providers/dio_provider.dart';
 
 import '../../providers/sale_order_form_provider.dart';
 import 'form_view_desktop.dart';
@@ -31,15 +32,26 @@ class _SaleOrderFormState extends ConsumerState<SaleOrderForm> {
     final double alto = registroActual.orderLineData!.length > 10
         ? 31 * registroActual.orderLineData!.length.toDouble()
         : altoNormal;
-    return Column(
+    return Stack(
       children: [
-        if (isPhone) ...[
-          SaleOrderMainInfoMobil(registroActual: registroActual)
-        ] else ...[
-          SaleOrderMainInfoDesktop(registroActual: registroActual)
+        Column(
+          children: [
+            if (isPhone) ...[
+              SaleOrderMainInfoMobil(registroActual: registroActual)
+            ] else ...[
+              SaleOrderMainInfoDesktop(registroActual: registroActual)
+            ],
+            SizedBox(height: alto, child: const SaleOrderLinesGrid()),
+            SaleOrderTotalInfo(registroActual: registroActual),
+          ],
+        ),
+        if (ref.watch(dioLoadingProvider) == true) ...[
+          const Center(
+            child: Card(
+              child: ProgressRing(),
+            ),
+          )
         ],
-        SizedBox(height: alto, child: const SaleOrderLinesGrid()),
-        SaleOrderTotalInfo(registroActual: registroActual)
       ],
     );
   }

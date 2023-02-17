@@ -15,11 +15,7 @@ final List<NavigationPaneItem> originalItems = [
   //   title: const Text('Despachar'),
   //   body: const DespachoEditPage(),
   // ),
-  PaneItem(
-    icon: const Icon(FluentIcons.home),
-    title: const Text('Inicio'),
-    body: const InicioPage(),
-  ),
+
   PaneItemHeader(header: const Text('Ventas')),
   PaneItem(
     icon: const Icon(FluentIcons.assessment_group),
@@ -45,6 +41,13 @@ final List<NavigationPaneItem> originalItems = [
       inventarios.loadLibrary,
       () => inventarios.OrdenDespachoPage(),
     ),
+  ),
+  PaneItemHeader(header: const Text('Sistema')),
+
+  PaneItem(
+    icon: const Icon(FluentIcons.info),
+    title: const Text('Informacion'),
+    body: const InicioPage(),
   ),
   // PaneItemHeader(header: const Text('Servicio Tecnico')),
   // PaneItem(

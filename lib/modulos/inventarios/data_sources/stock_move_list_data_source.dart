@@ -30,6 +30,19 @@ class StockMoveListDataSource extends DataGridSource {
 //**************************************************************************************/
 
   DataGridRowAdapter estiloCeldasStockMoveList(DataGridRow row) {
+    final bool precioMal = row
+            .getCells()
+            .firstWhere((cel) => cel.columnName == 'precioMal')
+            .value ??
+        false;
+    Color getColor() {
+      if (precioMal) {
+        return Colors.red.lightest;
+      }
+
+      return Colors.transparent;
+    }
+
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       if (dataGridCell.columnName == 'reservedAvailivity') {
@@ -45,6 +58,21 @@ class StockMoveListDataSource extends DataGridSource {
           ),
         );
       }
+      if (dataGridCell.columnName == 'productTracking') {
+        return Tooltip(
+          message: dataGridCell.value == 'serial'
+              ? 'Control por Numero de Serie'
+              : 'No usa Numero de Serie',
+          style: const TooltipThemeData(preferBelow: true),
+          child: Icon(
+            FluentIcons.q_r_code,
+            size: 24,
+            color:
+                dataGridCell.value == 'serial' ? Colors.green : Colors.grey[80],
+          ),
+        );
+      }
+
       if (dataGridCell.columnName == 'qtyDone') {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -88,6 +116,7 @@ class StockMoveListDataSource extends DataGridSource {
       if (dataGridCell.columnName == 'salePriceUnit') {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          color: getColor(),
           alignment: Alignment.centerRight,
           child: Text(
             dataGridCell.value == null
@@ -172,6 +201,19 @@ cabecerasTablaStockMoveList(WidgetRef ref) {
             alignment: Alignment.centerLeft,
             child: const Text(
               'Detalle',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+              overflow: TextOverflow.ellipsis,
+            ))),
+    GridColumn(
+        columnName: 'productTracking',
+        // allowEditing: true,
+        maximumWidth: 30.0,
+        minimumWidth: 25.0,
+        label: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              '',
               style: TextStyle(fontSize: 12, color: Colors.white),
               overflow: TextOverflow.ellipsis,
             ))),
@@ -269,6 +311,20 @@ cabecerasTablaStockMoveList(WidgetRef ref) {
               style: TextStyle(fontSize: 12, color: Colors.white),
               overflow: TextOverflow.ellipsis,
             ))),
+    GridColumn(
+        visible: false,
+        columnName: 'precioMal',
+        allowEditing: false,
+        maximumWidth: 70.0,
+        minimumWidth: 60.0,
+        label: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            alignment: Alignment.centerRight,
+            child: const Text(
+              'precioMal',
+              style: TextStyle(fontSize: 12, color: Colors.white),
+              overflow: TextOverflow.ellipsis,
+            ))),
   ];
   return mCab;
 }
@@ -284,6 +340,8 @@ List<DataGridRow> stockMoveListGetDataRows(List<StockMoveList> records) {
             DataGridCell<String>(
                 columnName: 'productCode', value: e.productCode),
             DataGridCell<String>(columnName: 'name', value: e.productIdName),
+            DataGridCell<String>(
+                columnName: 'productTracking', value: e.productTracking),
             DataGridCell<double>(
                 columnName: 'productUomQty',
                 value: e.productUomQty!.toDouble()),
@@ -301,6 +359,7 @@ List<DataGridRow> stockMoveListGetDataRows(List<StockMoveList> records) {
                 columnName: 'priceUnitFinal', value: e.priceUnitFinal),
             DataGridCell<double>(
                 columnName: 'salePriceUnit', value: e.salePriceUnit),
+            DataGridCell<bool>(columnName: 'precioMal', value: e.precioMal),
           ]))
       .toList();
 }

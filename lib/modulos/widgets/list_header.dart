@@ -34,7 +34,7 @@ class FormPageHeader extends ConsumerWidget {
     final theme = FluentTheme.of(context);
     List<CommandBarItem> myCommandBarItems = commandBarItems ?? [];
     final isPhone = DeviceScreen.isPhone(context);
-
+    String mtitleParent = titleParent ?? '';
     return PageHeader(
       padding: 0,
       // leading:
@@ -58,33 +58,35 @@ class FormPageHeader extends ConsumerWidget {
               text: title,
             ),
           ),
-          Expanded(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 100, minWidth: 100),
-              child: Tooltip(
-                message: '$titleParent',
-                style: const TooltipThemeData(preferBelow: true),
-                child: IconButton(
-                  icon: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        FluentIcons.back,
-                        color: Colors.blue.lighter,
-                        size: 24.0,
-                      ),
-                      Icon(
-                        FluentIcons.assessment_group,
-                        color: Colors.blue.lighter,
-                        size: 24.0,
-                      ),
-                    ],
+          if (mtitleParent.isNotEmpty) ...[
+            Expanded(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 100, minWidth: 100),
+                child: Tooltip(
+                  message: '$mtitleParent',
+                  style: const TooltipThemeData(preferBelow: true),
+                  child: IconButton(
+                    icon: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          FluentIcons.back,
+                          color: Colors.blue.lighter,
+                          size: 24.0,
+                        ),
+                        Icon(
+                          FluentIcons.assessment_group,
+                          color: Colors.blue.lighter,
+                          size: 24.0,
+                        ),
+                      ],
+                    ),
+                    onPressed: onPressedBackParent,
                   ),
-                  onPressed: onPressedBackParent,
                 ),
               ),
             ),
-          ),
+          ],
         ],
       ),
       commandBar: myCommandBarItems.isEmpty

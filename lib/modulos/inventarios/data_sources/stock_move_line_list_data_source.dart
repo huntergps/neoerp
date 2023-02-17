@@ -307,7 +307,7 @@ cabecerasTablaStockMoveLineList(WidgetRef ref) {
           )),
     ),
     GridColumn(
-      visible: true,
+      visible: false,
       columnName: 'lotId',
       maximumWidth: 70.0,
       minimumWidth: 60.0,

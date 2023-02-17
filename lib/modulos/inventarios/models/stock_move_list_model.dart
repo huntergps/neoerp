@@ -72,6 +72,11 @@ class StockMoveList {
     this.productIdName,
   });
 
+  bool get precioMal => priceUnitFinal == null || salePriceUnit == null
+      ? false
+      : (priceUnitFinal! - salePriceUnit!.toDouble()).abs() <
+          (salePriceUnit!.toDouble() * 0.02);
+
   Map<String, dynamic> toMap() {
     return {
       'writeUid': writeUid,

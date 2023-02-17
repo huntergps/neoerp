@@ -255,7 +255,7 @@ class HeaderFormularioDespachos extends ConsumerWidget {
       number: "[${registroActual.id}]",
       title: "${registroActual.name}",
       titleParent: (ref.watch(tipoPantalla) == "sale_despacho_form")
-          ? " ${ventaActualFormulario.name}   "
+          ? "Regresar a Listado de Ventas "
           : "",
       // title: "[${registroActual.id}] ${registroActual.name}",
       onPressedBackParent: () {

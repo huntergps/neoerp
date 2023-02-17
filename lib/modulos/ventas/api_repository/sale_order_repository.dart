@@ -76,7 +76,7 @@ void getRemoteListSaleOrders(
   String? listFilterSecondary,
 }) async {
   ref.watch(dioLoadingProvider.notifier).state = true;
-
+  busqueda = busqueda.trim().replaceAll(' ', '%');
   final dioClient = ref.watch(dioHttpProvider);
   const String getTokenUrl = '/api/sale.order';
   final url = dioClient.options.baseUrl + getTokenUrl;
