@@ -92,7 +92,66 @@ Future<String?> getDespachoReport(
   return null;
 }
 
-void setRemoteRecordDespacho(
+Future<bool> cambiarBodegaDespacho(
+    BuildContext context, WidgetRef ref, int id) async {
+  final dioClient = ref.watch(dioHttpProvider);
+  final String getTokenUrl = '/api/stock_picking_save/$id';
+  final url = dioClient.options.baseUrl + getTokenUrl;
+  var errorMsn = "";
+  try {
+    var mDespacho = darDespachoActualFormularioProviderNotifier(ref);
+
+    final newData = {
+      'id': mDespacho.state.id,
+      'user_id': mDespacho.state.userId,
+      'state_type': mDespacho.state.stateType,
+      'partner_venta_id': mDespacho.state.partnerVentaId,
+      'location_id': mDespacho.state.locationId,
+    };
+    final result = await dioClient.post(url, data: json.encode(newData));
+    if (result.statusCode == 200) {
+      ref.read(pickingOrderEditarProvider.notifier).state = true;
+    }
+    return true;
+  } on DioError catch (e) {
+    if (e.response != null) {
+      final mdata = e.response!.data;
+      // e.message
+      if (e.error.toString().isNotEmpty) {
+        List<String> resmns = [mdata.toString()];
+        if (mdata.toString().contains("odoo.exceptions.UserError")) {
+          resmns = mdata.toString().split("odoo.exceptions.UserError:");
+        }
+        if (mdata.toString().contains("odoo.exceptions.ValidationError")) {
+          resmns = mdata.toString().split("odoo.exceptions.ValidationError:");
+        }
+        if (mdata.toString().contains("AttributeError:")) {
+          resmns = mdata.toString().split("odoo.exceptions.ValidationError:");
+        }
+        if (mdata.toString().contains("Object Not Updated!")) {
+          resmns = mdata.toString().split("Object Not Updated!");
+        }
+
+        errorMsn =
+            " ${resmns.last.replaceAll("(", "").replaceAll(")", "").replaceAll("'", "")}";
+        final errorMsnLn = errorMsn.trim().split("\\n");
+        errorMsn = errorMsnLn.join("\n");
+      } else {
+        errorMsn = " ${mdata['error_descrip']}";
+      }
+      showErrorDialog(context, 'Error', errorMsn);
+    } else {
+      errorMsn = " ${e.message}";
+      showErrorDialog(context, 'Error', errorMsn);
+    }
+    ref.read(dioErrorMsnProvider.notifier).state = errorMsn;
+
+    ref.read(dioLoadingProvider.notifier).state = false;
+    return false;
+  }
+}
+
+Future<bool> setRemoteRecordDespacho(
     BuildContext context, WidgetRef ref, int id) async {
   final dioClient = ref.watch(dioHttpProvider);
   final String getTokenUrl = '/api/stock_picking_save/$id';
@@ -138,21 +197,20 @@ void setRemoteRecordDespacho(
       'user_id': mDespacho.state.userId,
       'state_type': mDespacho.state.stateType,
       'partner_venta_id': mDespacho.state.partnerVentaId,
-      'move_line_ids': newMoveData
+      'move_line_ids': newMoveData,
+      'location_id': mDespacho.state.locationId,
     };
     final result = await dioClient.post(url, data: json.encode(newData));
     if (result.statusCode == 200) {
-      // final mresults = result.data;
-      // final data = mresults['results'].first;
-      // putDespachoInProviders(ref, data);
       ref.read(pickingOrderEditarProvider.notifier).state = true;
     }
+    return true;
   } on DioError catch (e) {
     if (e.response != null) {
       final mdata = e.response!.data;
       // e.message
       if (e.error.toString().isNotEmpty) {
-        List<String> resmns = [];
+        List<String> resmns = [mdata.toString()];
         if (mdata.toString().contains("odoo.exceptions.UserError")) {
           resmns = mdata.toString().split("odoo.exceptions.UserError:");
         }
@@ -161,6 +219,9 @@ void setRemoteRecordDespacho(
         }
         if (mdata.toString().contains("AttributeError:")) {
           resmns = mdata.toString().split("odoo.exceptions.ValidationError:");
+        }
+        if (mdata.toString().contains("Object Not Updated!")) {
+          resmns = mdata.toString().split("Object Not Updated!");
         }
 
         errorMsn =
@@ -178,6 +239,7 @@ void setRemoteRecordDespacho(
     ref.read(dioErrorMsnProvider.notifier).state = errorMsn;
 
     ref.read(dioLoadingProvider.notifier).state = false;
+    return false;
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:neo/core/theme/controllers/settings.dart';
+import 'package:neo/core/settings/controllers/settings.dart';
 
 class ButtonChangeTheme extends ConsumerWidget {
   const ButtonChangeTheme({

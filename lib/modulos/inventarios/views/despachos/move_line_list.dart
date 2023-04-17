@@ -51,7 +51,7 @@ class _StockMoveLineListGridState extends ConsumerState<StockMoveLineListGrid> {
           selectionMode: SelectionMode.single,
           columnWidthMode: ColumnWidthMode.lastColumnFill,
           headerRowHeight: 26,
-          rowHeight: 30,
+          rowHeight: 28,
           allowEditing: true,
           navigationMode: GridNavigationMode.cell,
           editingGestureType: EditingGestureType.tap,

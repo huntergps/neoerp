@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:neo/widgets/button_change_theme.dart';
 
-import '../core/theme/controllers/settings.dart';
+import '../core/settings/controllers/settings.dart';
 import '../widgets/app_logo_text.dart';
 import '../widgets/page.dart';
 import '../widgets/session_item.dart';

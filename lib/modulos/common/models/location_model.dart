@@ -39,6 +39,14 @@ class LocationIdData {
     };
   }
 
+  String userAsString() {
+    return '#$id $name';
+  }
+
+  bool isEqual(LocationIdData model) {
+    return id == model.id;
+  }
+
   factory LocationIdData.fromMap(Map<String, dynamic> map) {
     return LocationIdData(
       writeUid: map['writeUid']?.toInt(),
@@ -55,6 +63,9 @@ class LocationIdData {
   }
 
   String toJson() => json.encode(toMap());
+  static List<LocationIdData> fromJsonList(List list) {
+    return list.map((item) => LocationIdData.fromMap(item)).toList();
+  }
 
   factory LocationIdData.fromJson(String source) =>
       LocationIdData.fromMap(json.decode(source));

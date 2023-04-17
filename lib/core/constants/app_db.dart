@@ -1,4 +1,4 @@
-import '../theme/models/used_key_value_db.dart';
+import '../settings/models/used_key_value_db.dart';
 
 class AppDb {
   AppDb._();

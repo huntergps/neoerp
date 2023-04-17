@@ -41,7 +41,7 @@ class _DespachoFormFormState extends ConsumerState<DespachoForm> {
     final isPhone = DeviceScreen.isPhone(context);
     final altoNormal = isPhone ? 250.00 : 550.00;
     final double alto =
-        moves!.length > 10 ? 31 * moves.length.toDouble() : altoNormal;
+        moves!.length > 10 ? 40 * moves.length.toDouble() : altoNormal;
     if (registroActual == null) {
       return const Center(
         child: Card(

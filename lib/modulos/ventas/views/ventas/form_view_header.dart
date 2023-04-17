@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
-import 'package:neo/core/theme/controllers/settings.dart';
+import 'package:neo/core/settings/controllers/settings.dart';
 import 'package:neo/core/utils/device_info.dart';
 import 'package:neo/modulos/ventas/vars/sale_order_filters.dart';
 import 'package:neo/modulos/widgets/link_text_span.dart';

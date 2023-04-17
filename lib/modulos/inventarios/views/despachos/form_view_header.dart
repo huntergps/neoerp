@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
-import 'package:neo/core/theme/controllers/settings.dart';
+import 'package:neo/core/settings/controllers/settings.dart';
 import 'package:neo/modulos/widgets/link_text_span.dart';
 import 'package:neo/modulos/widgets/list_header.dart';
+import 'package:neo/widgets/error_dialog.dart';
 import 'package:printing/printing.dart';
 
 import '../../../../providers/providers_general.dart';
@@ -178,8 +179,13 @@ class HeaderFormularioDespachos extends ConsumerWidget {
                 size: 24.0,
               ),
               onPressed: () {
-                var despachoId = registroActual.id?.toInt() ?? 0;
-                setRemoteRecordDespacho(context, ref, despachoId);
+                if (registroActual.userId!.toInt() == 0) {
+                  showErrorDialog(context, 'Error',
+                      'Se debe especificar al usuario responsable!!');
+                } else {
+                  var despachoId = registroActual.id!.toInt();
+                  setRemoteRecordDespacho(context, ref, despachoId);
+                }
               },
             ),
           ),

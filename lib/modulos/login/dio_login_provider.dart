@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/theme/controllers/settings.dart';
+import '../../core/settings/controllers/settings.dart';
 import 'models/session_model.dart';
 
 final dioLoginProvider = Provider<Dio>((ref) => Dio(

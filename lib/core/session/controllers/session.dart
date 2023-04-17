@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../theme/models/settings_entry.dart';
+import '../../settings/models/settings_entry.dart';
 
 const bool _debug = !kReleaseMode && true;
 

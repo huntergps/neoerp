@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neo/modulos/common/models/location_model.dart';
 import 'package:neo/modulos/common/models/user_model.dart';
 import 'package:neo/providers/dio_provider.dart';
 
@@ -87,6 +88,27 @@ Future<List<PartnerList>> getDataComboTransportista(
   return [];
 }
 
+Future<List<LocationIdData>> getDataComboBodegas(
+    WidgetRef ref, busqueda) async {
+  final dioClient = ref.watch(dioHttpProvider);
+  const String getTokenUrl = '/api/stock.location';
+  final url = dioClient.options.baseUrl + getTokenUrl;
+  final filtermio = "[('name','ilike','$busqueda'),('usage','=','internal')]";
+  final response = await dioClient.get(url, queryParameters: {
+    // 'offset': ref.watch(paginaActualPartnerListProvider),
+    'limit': 1000,
+    'filters': filtermio
+  });
+
+  final mresults = response.data;
+
+  final data = mresults['results'];
+  if (data != null) {
+    return LocationIdData.fromJsonList(data);
+  }
+
+  return [];
+}
 
 // getRemoteListPartners async(
 //   BuildContext context,

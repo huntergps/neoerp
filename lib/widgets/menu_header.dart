@@ -1,9 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart' hide Page;
 
-import '../../../widgets/app_logo_text.dart';
+import '../../../../widgets/app_logo_text.dart';
 
-class MenuHeader extends StatelessWidget {
-  const MenuHeader({
+class MenuHeaderSession extends StatelessWidget {
+  const MenuHeaderSession({
     Key? key,
     required this.odooDb,
   }) : super(key: key);

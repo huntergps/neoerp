@@ -6,10 +6,10 @@ import 'package:neo/widgets/plataforma.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'core/utils/providers_generales.dart';
-import 'core/theme/controllers/settings.dart';
+import 'core/settings/controllers/settings.dart';
 import 'modulos/login.dart';
 import 'menu_options.dart';
-import 'menu_side.dart';
+import 'widgets/frame_header.dart';
 import 'providers/providers_general.dart';
 
 import 'routes/ventas.dart' deferred as ventas;
@@ -128,35 +128,6 @@ class _FramePageState extends ConsumerState<FramePage> with WindowListener {
         },
       );
     }
-  }
-}
-
-class FrameHeader extends ConsumerWidget {
-  const FrameHeader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = FluentTheme.of(context);
-
-    return SizedBox(
-      height: kOneLineTileHeight,
-      child: ShaderMask(
-        shaderCallback: (rect) {
-          final AccentColor color = ref.watch(Settings.accentColorProvider);
-          color.defaultBrushFor(theme.brightness);
-
-          return LinearGradient(
-            colors: [
-              color,
-              color,
-            ],
-          ).createShader(rect);
-        },
-        child: MenuHeader(odooDb: ref.watch(Settings.serverDBProvider)),
-      ),
-    );
   }
 }
 

@@ -2,8 +2,8 @@ import 'package:fluent_ui/fluent_ui.dart' hide Page;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as flutter_acrylic;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:neo/core/theme/models/key_value_db_listener.dart';
-import 'package:neo/core/theme/models/key_value_db_provider.dart';
+import 'package:neo/core/settings/models/key_value_db_listener.dart';
+import 'package:neo/core/settings/models/key_value_db_provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_manager/window_manager.dart';
@@ -14,7 +14,7 @@ import 'routes/servicio_tecnico.dart' deferred as sat;
 
 import 'frame.dart';
 
-import 'core/theme/controllers/settings.dart';
+import 'core/settings/controllers/settings.dart';
 import 'widgets/deferred_widget.dart';
 
 const String appTitle = 'Flex ERP';

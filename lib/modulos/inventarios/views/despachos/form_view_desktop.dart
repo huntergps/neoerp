@@ -1,7 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neo/modulos/common/models/location_model.dart';
 
 import 'package:neo/modulos/entidades/api_repository/partner_repository.dart';
+import 'package:neo/providers/dio_provider.dart';
 import 'package:neo/widgets/error_dialog.dart';
 import 'package:neo/widgets/text_label.dart';
 
@@ -37,6 +39,12 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
             ? UserList(id: 0, name: '', login: '', email: '')
             : registroActual!.userIdData!.first
         : UserList(id: 0, name: '', login: '', email: '');
+
+    final LocationIdData bodegaActual = registroActual!.locationIdData != null
+        ? registroActual!.locationIdData!.isEmpty
+            ? LocationIdData(id: 0, name: '')
+            : registroActual!.locationIdData!.first
+        : LocationIdData(id: 0, name: '');
 
     final colorFondo = getColorAprobado(context, registroActual!.state);
     final colorLinea =
@@ -190,11 +198,71 @@ class DespachoMainInfoDesktop extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      TextLabel(
-                          width: 280,
-                          widthValue: 280,
-                          label: 'Bod.Origen',
-                          value: '${registroActual!.locationName}'),
+                      // if (modoEdicion) ...[
+                      //   TextLabel(
+                      //       width: 280,
+                      //       widthValue: 280,
+                      //       label: 'Bod.Origen',
+                      //       value: '${registroActual!.locationName}'),
+                      // ] else ...[
+                      if (registroActual!.state == 'draft' ||
+                          registroActual!.state == 'waiting' ||
+                          registroActual!.state == 'confirmed') ...[
+                        ComboSearch<LocationIdData>(
+                          // enabled: (registroActual!.state == 'draft' ||
+                          //     registroActual!.state == 'waiting' ||
+                          //     registroActual!.state == 'confirmed'),
+                          constraints: const BoxConstraints(
+                            maxWidth: 280,
+                            maxHeight: 36,
+                          ),
+                          title: 'Bod.Origen',
+                          selectedItem: bodegaActual,
+                          asyncItems: (String busqueda) async {
+                            return getDataComboBodegas(ref, busqueda);
+                          },
+                          filterFn: (bodega, filter) {
+                            return (bodega.name!
+                                .toLowerCase()
+                                .contains(filter.toLowerCase()));
+                          },
+                          itemBuilder: listadoBodegas,
+                          itemAsString: (LocationIdData? data) {
+                            return '${data?.name}';
+                          },
+                          onChanged: (LocationIdData? data) {
+                            showQuestion(context, 'Cambiar Bodega',
+                                'Esta seguro que desea cambiar de bodega?', () {
+                              Navigator.pop(context);
+                              modificarMoveDesdeFormulario(
+                                  context,
+                                  ref,
+                                  registroActual!.copyWith(
+                                    locationId: data!.id,
+                                    locationName: data.name,
+                                    locationIdData: [data],
+                                  ));
+                              var despachoId = registroActual!.id!.toInt();
+                              final ok = cambiarBodegaDespacho(
+                                  context, ref, despachoId);
+                              ok.then((resultadoRemoto) {
+                                if (resultadoRemoto == false) {
+                                  getRemoteRecordDespacho(
+                                      context, ref, despachoId);
+                                }
+                              });
+                            });
+                          },
+                          compareFn: (i, s) => i.isEqual(s),
+                        ),
+                      ] else ...[
+                        TextLabel(
+                            width: 280,
+                            widthValue: 280,
+                            label: 'Bod.Origen',
+                            value: '${registroActual!.locationName}'),
+                      ],
+                      // ],
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextLabel(

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/theme/controllers/settings.dart';
+import '../core/settings/controllers/settings.dart';
 
 final dioHttpProvider = Provider<Dio>((ref) => Dio(
       BaseOptions(

@@ -63,7 +63,7 @@ class FormPageHeader extends ConsumerWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 100, minWidth: 100),
                 child: Tooltip(
-                  message: '$mtitleParent',
+                  message: mtitleParent,
                   style: const TooltipThemeData(preferBelow: true),
                   child: IconButton(
                     icon: Row(

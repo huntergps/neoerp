@@ -7,6 +7,7 @@ import 'package:flutter/material.dart'
         OutlineInputBorder,
         UnderlineInputBorder,
         InputBorder;
+import 'package:neo/modulos/common/models/location_model.dart';
 import 'package:neo/modulos/common/models/lot_model.dart';
 import 'package:neo/modulos/common/models/user_model.dart';
 import 'package:neo/modulos/entidades/models/partner_model.dart';
@@ -219,6 +220,35 @@ Widget listadoUsuarios(
             style: theme.typography.body!.copyWith(color: theme.accentColor),
           ),
           subtitle: Text(item?.login?.toString() ?? ''),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget listadoBodegas(
+  BuildContext context,
+  LocationIdData? item,
+  bool isSelected,
+) {
+  final theme = FluentTheme.of(context);
+
+  return ConstrainedBox(
+    constraints: const BoxConstraints(maxHeight: 100),
+    child: Padding(
+      padding:
+          const EdgeInsets.only(left: 8.0, right: 10.0, top: 8.0, bottom: 1.0),
+      child: Card(
+        padding: const EdgeInsets.all(2),
+        backgroundColor: theme.micaBackgroundColor,
+        borderColor: theme.accentColor.darkest,
+        child: ListTile(
+          // selected: isSelected,
+          title: Text(
+            item?.name ?? '',
+            style: theme.typography.body!.copyWith(color: theme.accentColor),
+          ),
+          subtitle: Text(item?.warehouseId?.toString() ?? ''),
         ),
       ),
     ),

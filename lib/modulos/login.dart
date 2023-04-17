@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:neo/widgets/error_bar.dart';
 import 'package:neo/widgets/plataforma.dart';
 
-import '../core/theme/controllers/settings.dart';
+import '../core/settings/controllers/settings.dart';
 import '../widgets/app_logo_text.dart';
 import '../widgets/page.dart';
 import 'login/dio_login_provider.dart';

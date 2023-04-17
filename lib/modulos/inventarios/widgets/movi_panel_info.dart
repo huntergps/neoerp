@@ -75,7 +75,7 @@ class PanelMoveInfo extends ConsumerWidget {
                 padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
                 child: Column(
                   children: [
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 6.0),
                     Row(
                       children: [
                         Flexible(
@@ -108,7 +108,7 @@ class PanelMoveInfo extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 6.0),
                     Row(
                       children: [
                         Flexible(
@@ -121,7 +121,7 @@ class PanelMoveInfo extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 6.0),
                     Row(
                       children: [
                         Flexible(
@@ -152,7 +152,7 @@ class PanelMoveInfo extends ConsumerWidget {
                       ],
                     ),
                     if (modoEdicion == false) ...[
-                      const SizedBox(height: 8.0),
+                      const SizedBox(height: 6.0),
                       if (esPorSerie == false) ...[
                         Row(
                           children: [
@@ -335,7 +335,7 @@ class PanelMoveInfo extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 4.0),
+            const SizedBox(height: 3.0),
             StockMoveLineListGrid(moveListRecords: move.moveLineIdsData),
           ],
         ));
