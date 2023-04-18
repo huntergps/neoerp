@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neo/core/settings/controllers/settings.dart';
 import 'package:neo/modulos/inventarios/models/stock_move_list_model.dart';
+import 'package:neo/modulos/login/dio_login_provider.dart';
 import 'package:neo/widgets/error_dialog.dart';
 
 import '../../../providers/dio_provider.dart';
@@ -159,6 +161,9 @@ Future<bool> setRemoteRecordDespacho(
   var errorMsn = "";
   try {
     var mDespacho = darDespachoActualFormularioProviderNotifier(ref);
+    final mUsuario = mDespacho.state.userId!.toInt();
+    final rUsuario = int.parse(ref.watch(sessionProvider).uid.toString());
+
     final mMovimientoListado = darMoveListProviderNotifier(ref);
     final newMoveData = [];
     for (var movimiento in mMovimientoListado.getRegistros()) {
@@ -194,7 +199,7 @@ Future<bool> setRemoteRecordDespacho(
     }
     final newData = {
       'id': mDespacho.state.id,
-      'user_id': mDespacho.state.userId,
+      'user_id': mUsuario > 0 ? mUsuario : rUsuario,
       'state_type': mDespacho.state.stateType,
       'partner_venta_id': mDespacho.state.partnerVentaId,
       'move_line_ids': newMoveData,

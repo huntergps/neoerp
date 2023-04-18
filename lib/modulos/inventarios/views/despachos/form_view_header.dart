@@ -179,13 +179,13 @@ class HeaderFormularioDespachos extends ConsumerWidget {
                 size: 24.0,
               ),
               onPressed: () {
-                if (registroActual.userId!.toInt() == 0) {
-                  showErrorDialog(context, 'Error',
-                      'Se debe especificar al usuario responsable!!');
-                } else {
-                  var despachoId = registroActual.id!.toInt();
-                  setRemoteRecordDespacho(context, ref, despachoId);
-                }
+                // if (registroActual.userId!.toInt() == 0) {
+                //   showErrorDialog(context, 'Error',
+                //       'Se debe especificar al usuario responsable!!');
+                // } else {
+                var despachoId = registroActual.id!.toInt();
+                setRemoteRecordDespacho(context, ref, despachoId);
+                // }
               },
             ),
           ),
