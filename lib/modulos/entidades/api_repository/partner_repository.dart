@@ -18,6 +18,7 @@ Future<List<StockLot>> getDataComboCodBar(
   final dioClient = ref.watch(dioHttpProvider);
   const String getTokenUrl = '/api/stock.production.lot';
   final url = dioClient.options.baseUrl + getTokenUrl;
+  busqueda = busqueda.replaceAll("'", "%");
   final filtermio =
       "[('name','ilike','$busqueda'),('product_id','=',$producId)]";
   final response = await dioClient.get(url, queryParameters: {
