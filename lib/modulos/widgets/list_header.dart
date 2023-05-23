@@ -250,7 +250,7 @@ class ListHeaderPage extends StatelessWidget {
                   ),
                   if (filterSecondaryValuesList.isNotEmpty) ...[
                     SizedBox(
-                      width: 118,
+                      width: 168,
                       child: Padding(
                         padding: const EdgeInsets.only(right: 8.0),
                         child: ComboBox<String>(

@@ -11,6 +11,8 @@ import '../../models/stock_move_list_model.dart';
 import '../../providers/stock_move_list_provider.dart';
 import '../../vars/picking_order_global_vars.dart';
 
+final CustomColumnSizer _customColumnSizer = CustomColumnSizer();
+
 class StockMoveListGrid extends ConsumerStatefulWidget {
   const StockMoveListGrid({
     super.key,
@@ -51,6 +53,25 @@ class _StockMoveListGridState extends ConsumerState<StockMoveListGrid> {
           key: gridKeyStockMoveLines,
           controller: dataGridControllerStockMoveLines,
           source: saleOrdersdatasource,
+          // columnSizer: _customColumnSizer,
+          onQueryRowHeight: (details) {
+            return details.rowIndex < 1
+                ? 26.0
+                : details.getIntrinsicRowHeight(details.rowIndex) / 1.7;
+          },
+          // onQueryRowHeight: (details) {
+          //   // return details.rowIndex == 1 ? 170.0 : 49.0;
+          //   return details.rowIndex == 0
+          //       ? 26.0
+          //       : details.getIntrinsicRowHeight(details.rowIndex,
+          //           excludedColumns: [
+          //               'id',
+          //               'productCode',
+          //               'productTracking',
+          //               'productUomQty',
+          //               'reservedAvailivity'
+          //             ]);
+          // },
           columns: cabecerasTablaStockMoveList(ref),
           gridLinesVisibility: GridLinesVisibility.both,
           headerGridLinesVisibility: GridLinesVisibility.both,
@@ -65,5 +86,30 @@ class _StockMoveListGridState extends ConsumerState<StockMoveListGrid> {
             seleccionarMoveDeLista(context, ref, saleOrdersdatasource, index);
           },
         ));
+  }
+}
+
+class CustomColumnSizer extends ColumnSizer {
+  @override
+  double computeCellHeight(GridColumn column, DataGridRow row,
+      Object? cellValue, TextStyle textStyle) {
+    // if (column.columnName == 'Date of Birth') {
+    //   cellValue = DateFormat.yMMMMd('en_US').format(cellValue as DateTime);
+    // } else if (column.columnName == 'Salary') {
+    //   cellValue =
+    //       NumberFormat.simpleCurrency(decimalDigits: 0).format(cellValue);
+    // }
+
+    if (column.columnName == 'name') {
+      if (cellValue.toString().contains('~^')) {
+        textStyle = textStyle.copyWith(fontSize: 15.0);
+      } else {
+        textStyle = textStyle.copyWith(fontSize: 1.0);
+      }
+      //  else {
+      //   textStyle = textStyle.copyWith(fontSize: 4.0);
+      // }
+    }
+    return super.computeCellHeight(column, row, cellValue, textStyle);
   }
 }

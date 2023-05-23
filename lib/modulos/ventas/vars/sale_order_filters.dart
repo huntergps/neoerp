@@ -1,22 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:neo/core/utils/filter_model.dart';
 
-const List<FilterMenuItem> saleOrderActiveFilterItems = [
-  FilterMenuItem(
-    title: 'Activos',
-    where: "('active','=',1)",
-  ),
-  FilterMenuItem(
-    title: 'Inactivos',
-    where: "('active','!=',1)",
-  ),
-  FilterMenuItem(
-    title: 'Todos',
-    icon: FluentIcons.list,
-    where: "",
-  ),
-];
-
 const saleOrderEstateFilterItemsInitialValue = 'Pedido de Venta';
 const List<FilterMenuItem> saleOrderEstateFilterItems = [
   FilterMenuItem(
@@ -66,14 +50,31 @@ const List<FilterMenuItem> saleOrderEstateFilterItems = [
   ),
 ];
 
-// var stateSaleOrderField = {
-//   'draft': 'Borrador',
-//   'sent': 'Enviado',
-//   'sale': 'Pedido de Venta',
-//   'done': 'Bloqueado',
-//   'waiting_approval': 'A la espera de Aprobación',
-//   'approved': 'Aprobado',
-//   'posted': 'Hecho',
-//   'rejected': 'Rechazado',
-//   'cancel': 'Cancelado',
-// };
+const saleOrderDespachoEstateFilterItemsInitialValue = 'Para despachar';
+const List<FilterMenuItem> saleOrderDespachoEstateFilterItems = [
+  FilterMenuItem(
+    title: 'Todos',
+    where: "",
+  ),
+  FilterMenuItem(
+    title: 'Sin despachos',
+    where: "('estado_despacho_filtro','=','Sin despachos')",
+  ),
+  FilterMenuItem(
+    title: 'Borrador',
+    where: "('estado_despacho_filtro','=','Borrador')",
+  ),
+  FilterMenuItem(
+    title: 'Para despachar',
+    icon: FluentIcons.list,
+    where: "('estado_despacho_filtro','=','Para despachar')",
+  ),
+  FilterMenuItem(
+    title: 'Despachado',
+    where: "('estado_despacho_filtro','=','Despachado')",
+  ),
+  FilterMenuItem(
+    title: 'Cancelado',
+    where: "('estado_despacho_filtro','=','Cancelado')",
+  ),
+];

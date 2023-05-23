@@ -33,8 +33,15 @@ class HeaderListadoVentas extends ConsumerWidget {
       searchTextController: searchTextController,
       filterOptions: saleOrderEstateFilterItems,
       filterInitialOption: ref.watch(busquedaFiltroSaleOrderListProvider),
+      filterSecondaryOptions: saleOrderDespachoEstateFilterItems,
+      filterSecondaryInitialOption:
+          ref.watch(busquedaFiltroDespachosSaleOrderListProvider),
       onChangedFilterOptions: (value) {
         ref.watch(busquedaFiltroSaleOrderListProvider.notifier).state = value!;
+      },
+      onChangedSecundaryFilterOptions: (value) {
+        ref.watch(busquedaFiltroDespachosSaleOrderListProvider.notifier).state =
+            value!;
       },
       onChangedSearchText: (textValue) {
         ref.watch(busquedaSaleOrderListProvider.notifier).state = textValue!;
@@ -52,10 +59,16 @@ class HeaderListadoVentas extends ConsumerWidget {
             0;
       },
       onPressedSearch: () {
-        getRemoteListSaleOrders(context, ref,
-            ref.watch(busquedaSaleOrderListProvider.notifier).state,
-            listFilterOptions: saleOrderEstateFilterItems,
-            listFilter: ref.watch(busquedaFiltroSaleOrderListProvider));
+        getRemoteListSaleOrders(
+          context,
+          ref,
+          ref.watch(busquedaSaleOrderListProvider.notifier).state,
+          listFilterOptions: saleOrderEstateFilterItems,
+          listFilter: ref.watch(busquedaFiltroSaleOrderListProvider),
+          listSecondaryFilterOptions: saleOrderDespachoEstateFilterItems,
+          listFilterSecondary:
+              ref.watch(busquedaFiltroDespachosSaleOrderListProvider),
+        );
       },
     );
   }

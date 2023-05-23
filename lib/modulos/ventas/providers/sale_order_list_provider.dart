@@ -56,3 +56,7 @@ final busquedaSaleOrderListProvider = StateProvider<String>(
 final busquedaFiltroSaleOrderListProvider = StateProvider<String>(
   (ref) => saleOrderEstateFilterItemsInitialValue,
 );
+
+final busquedaFiltroDespachosSaleOrderListProvider = StateProvider<String>(
+  (ref) => saleOrderDespachoEstateFilterItemsInitialValue,
+);

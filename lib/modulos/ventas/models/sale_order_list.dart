@@ -19,6 +19,7 @@ class SaleOrderList {
   int? writeUid;
   String? writeDate;
   String? estadoDespachos;
+  String? estadoDespachoFiltro;
 
   SaleOrderList({
     this.id,
@@ -39,6 +40,7 @@ class SaleOrderList {
     this.writeDate,
     this.writeUid,
     this.estadoDespachos,
+    this.estadoDespachoFiltro,
   });
 
   SaleOrderList.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class SaleOrderList {
     writeDate = json['write_date'];
     writeUid = revisaVaciosInt(json['write_uid']);
     estadoDespachos = revisaVaciosString(json['estado_despachos']);
+    estadoDespachoFiltro = revisaVaciosString(json['estado_despacho_filtro']);
   }
 
   Map<String, dynamic> toJson() {
@@ -79,7 +82,6 @@ class SaleOrderList {
     data['cliente_name'] = clienteName;
     data['cliente_ruc'] = clienteRuc;
     data['total_sri'] = totalSri;
-
     return data;
   }
 }

@@ -222,27 +222,25 @@ List<DataGridRow> saleOrderGetDataRows(List<SaleOrderList> records) {
                 columnName: 'state', value: stateSaleOrderField[e.state]),
             DataGridCell<String>(
                 columnName: 'estadoDespachos',
-                value: getEstadoDespacho(
-                  e.estadoDespachos.toString(),
-                )),
+                value: e.estadoDespachoFiltro.toString()),
           ]))
       .toList();
 }
 
-String getEstadoDespacho(String estados) {
-  if (estados.isEmpty) {
-    return 'Sin despachos';
-  }
-  final estadosList = estados.split(',').map((e) => e.trim()).toList();
-  if (estadosList.any((e) => ['draft', 'confirmed'].contains(e))) {
-    return 'Borrador';
-  } else if (estadosList.any((e) => ['confirmed', 'assigned'].contains(e))) {
-    return 'Para despachar';
-  } else if (estadosList.contains('done')) {
-    return 'Despachado';
-  } else if (estados.contains('cancel')) {
-    return 'Cancelado';
-  } else {
-    return 'Sin despachos';
-  }
-}
+// String getEstadoDespacho(String estados) {
+//   if (estados.isEmpty) {
+//     return 'Sin despachos';
+//   }
+//   final estadosList = estados.split(',').map((e) => e.trim()).toList();
+//   if (estadosList.any((e) => ['draft', 'confirmed'].contains(e))) {
+//     return 'Borrador';
+//   } else if (estadosList.any((e) => ['confirmed', 'assigned'].contains(e))) {
+//     return 'Para despachar';
+//   } else if (estadosList.contains('done')) {
+//     return 'Despachado';
+//   } else if (estados.contains('cancel')) {
+//     return 'Cancelado';
+//   } else {
+//     return 'Sin despachos';
+//   }
+// }

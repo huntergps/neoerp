@@ -45,6 +45,35 @@ class StockMoveListDataSource extends DataGridSource {
 
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
+      if (dataGridCell.columnName == 'name') {
+        List<String> lines = dataGridCell.value.toString().split('~^');
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+          alignment: Alignment.centerLeft,
+          child: lines.length < 2
+              ? Text(
+                  dataGridCell.value == null ? '' : lines[0],
+                  style: const TextStyle(fontSize: 11),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      dataGridCell.value == null ? '' : lines[0],
+                      style: const TextStyle(fontSize: 11),
+                    ),
+                    Text(
+                      dataGridCell.value == null ? '' : lines[1],
+                      style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.warningPrimaryColor,
+                          fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+        );
+      }
       if (dataGridCell.columnName == 'reservedAvailivity') {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -339,7 +368,11 @@ List<DataGridRow> stockMoveListGetDataRows(List<StockMoveList> records) {
             DataGridCell<int>(columnName: 'id', value: e.id),
             DataGridCell<String>(
                 columnName: 'productCode', value: e.productCode),
-            DataGridCell<String>(columnName: 'name', value: e.productIdName),
+            DataGridCell<String>(
+                columnName: 'name',
+                value: e.productIdName!.toUpperCase() == e.name!.toUpperCase()
+                    ? e.name
+                    : '${e.name}~^${e.productIdName}'),
             DataGridCell<String>(
                 columnName: 'productTracking', value: e.productTracking),
             DataGridCell<double>(

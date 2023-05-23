@@ -75,6 +75,7 @@ void getRemoteListSaleOrders(
   List<FilterMenuItem>? listSecondaryFilterOptions,
   String? listFilterSecondary,
 }) async {
+  print("************************ >>>>>>>>>>>");
   ref.watch(dioLoadingProvider.notifier).state = true;
   busqueda = busqueda.trim().replaceAll(' ', '%');
   final dioClient = ref.watch(dioHttpProvider);
@@ -87,7 +88,7 @@ void getRemoteListSaleOrders(
   }
   if (listFilterSecondary.toString() != '') {
     filterSecondary =
-        darFiltro(listSecondaryFilterOptions, listFilterSecondary.toString());
+        ", ${darFiltro(listSecondaryFilterOptions, listFilterSecondary.toString())}";
   }
   Map<String, dynamic>? queryParameters = {};
   if (busqueda.trim().isNotEmpty) {
